@@ -1,4 +1,5 @@
-(() => {
+(async () => {
+  await siteContent.ready;
   const price = document.getElementById("c-harga");
   const downPayment = document.getElementById("c-dp");
   const term = document.getElementById("c-tenor");

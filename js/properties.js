@@ -1,4 +1,4 @@
-(() => {
+(async () => {
   const search = document.querySelector("[data-property-search]");
   const form = search.querySelector("form");
   const tabs = [...search.querySelectorAll("[data-status]")];
@@ -6,6 +6,27 @@
   const type = form.querySelector("#tipe");
   const price = form.querySelector("#harga");
   const catalog = document.getElementById("daftar-properti");
+  const [result] = await Promise.allSettled([
+    propertyApi.listUnits(catalog ? { sort: "-createdAt" } : undefined),
+    siteContent.ready,
+  ]);
+  const loading = document.querySelector("[data-property-load-status]");
+  const loadFailed = result.status === "rejected";
+  const units = loadFailed ? [] : result.value;
+  if (loadFailed) {
+    console.error("Gagal memuat properti:", result.reason);
+    loading.textContent = "Daftar properti belum bisa dimuat. Coba muat ulang halaman.";
+  } else {
+    loading.hidden = true;
+  }
+
+  const regionOf = (unit) => unit.location?.split(",").pop().trim() || "";
+  const existingRegions = new Set([...region.options].map((option) => option.value));
+  const additions = [...new Set(units.map(regionOf).filter(Boolean))]
+    .filter((value) => !existingRegions.has(value))
+    .sort((a, b) => a.localeCompare(b, "id-ID"));
+  region.append(...additions.map((value) => new Option(value)));
+
   const statusField = form.elements.namedItem("status");
   const params = new URLSearchParams(window.location.search);
   const requestedType = params.get("type");
@@ -99,21 +120,10 @@
 
   const renderCatalog = catalog && initCatalog();
   const homepageGrid = document.getElementById("homepage-property-results");
-  const homepageCardTemplate = homepageGrid?.querySelector(".pcard");
-
-  if (homepageCardTemplate && propertyApi.available) {
-    propertyApi
-      .listUnits()
-      .then((units) => {
-        const cards = units.map((unit) =>
-          createPropertyCard(unit, homepageCardTemplate),
-        );
-
-        homepageGrid.replaceChildren(...cards);
-      })
-      .catch((error) => {
-        console.error("Gagal memuat properti beranda dari CMS:", error);
-      });
+  const homepageCardTemplate = document.getElementById("homepage-property-template");
+  if (homepageCardTemplate) {
+    const template = homepageCardTemplate.content.firstElementChild;
+    homepageGrid.replaceChildren(...units.map((unit) => createPropertyCard(unit, template)));
   }
 
   function createFilterDropdown(select) {
@@ -266,7 +276,7 @@
     const favorite = card.querySelector(".heart");
 
     card.dataset.status = unit.status === "Disewa" ? "sewa" : "jual";
-    card.dataset.region = unit.location?.split(",").pop().trim() || "";
+    card.dataset.region = regionOf(unit);
     card.dataset.propertyType = unit.type?.toLowerCase() || "";
     card.dataset.price = String(unit.rawPrice);
     card.dataset.area = String(unit.area ?? 0);
@@ -302,8 +312,8 @@
 
   function initCatalog() {
     const grid = catalog.querySelector("#property-results");
-    let cards = [...grid.querySelectorAll(".pcard")];
-    const cardTemplate = cards[0];
+    const template = document.getElementById("catalog-property-template").content.firstElementChild;
+    const cards = units.map((unit) => createPropertyCard(unit, template));
     const count = catalog.querySelector(".count-text strong");
     const empty = catalog.querySelector("#property-empty");
     const sort = catalog.querySelector("#sort-select");
@@ -346,8 +356,8 @@
         card.hidden = !visibleCards.has(card);
       }
 
-      count.textContent = `${matches.length} properti`;
-      empty.hidden = matches.length > 0;
+      count.textContent = loadFailed ? "—" : `${matches.length} properti`;
+      empty.hidden = loadFailed || matches.length > 0;
       renderPagination(pageCount);
     }
 
@@ -420,19 +430,7 @@
       catalog.scrollIntoView({ block: "start" });
     });
 
-    render();
-    if (propertyApi.available && cardTemplate) {
-      propertyApi
-        .listUnits({ sort: "-createdAt" })
-        .then((units) => {
-          cards = units.map((unit) => createPropertyCard(unit, cardTemplate));
-
-          applySort();
-        })
-        .catch((error) => {
-          console.error("Gagal memuat katalog dari CMS:", error);
-        });
-    }
+    applySort();
     return resetPage;
   }
 })();

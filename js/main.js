@@ -43,7 +43,8 @@ for (const button of document.querySelectorAll(".heart")) {
 }
 
 // Count up once when each About page statistic enters view.
-(() => {
+(async () => {
+  await siteContent.ready;
   const stats = document.querySelectorAll(".stats-grid .stat-num");
   if (!stats.length || !("IntersectionObserver" in window)) return;
 

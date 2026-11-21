@@ -1,4 +1,5 @@
-(() => {
+(async () => {
+  await siteContent.ready;
   const form = document.getElementById("contact-form");
   const status = document.getElementById("contact-status");
 
@@ -17,7 +18,7 @@
     ].join("\r\n");
 
     status.textContent = "Periksa draf di aplikasi email Anda, lalu kirim dari sana.";
-    window.location.href = `${form.action}?subject=${encodeURIComponent("Permintaan Konsultasi Lumira")}&body=${encodeURIComponent(body)}`;
+    window.location.href = `${form.action}?subject=${encodeURIComponent("Permintaan Konsultasi ORVA")}&body=${encodeURIComponent(body)}`;
   });
 
   form.hidden = false;

@@ -3,24 +3,25 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Detail Artikel — Lumira Property</title>
+    <title data-cms-text="seo.title">Detail Artikel — ORVA</title>
     <meta
       name="description"
-      content="Panduan perumahan dari Lumira Property, mulai dari survei rumah dan KPR hingga desain hunian dan pilihan lingkungan." />
-    <link rel="icon" type="image/svg+xml" href="images/favicon.svg" />
+      content="Panduan perumahan dari ORVA, mulai dari survei rumah dan KPR hingga desain hunian dan pilihan lingkungan."  data-cms-content="seo.description"/>
+    <link rel="icon" type="image/svg+xml" href="images/orva-favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:wght@400;500;600&display=swap"
       rel="stylesheet" />
-    <script src="js/theme.js"></script>
+    <script src="js/theme.js?v=orva-1"></script>
     <link rel="stylesheet" href="css/style.css" />
-    <link rel="stylesheet" href="css/theme.css" />
-    <script src="js/main.js" defer></script>
-    <script src="js/article-content.js" defer></script>
-    <script src="js/article-detail.js" defer></script>
+    <link rel="stylesheet" href="css/theme.css?v=orva-1" />
+    <script src="js/cms-api.js?v=orva-1" defer></script>
+    <script src="js/site-content.js?v=orva-1" defer></script>
+    <script src="js/main.js?v=orva-1" defer></script>
+    <script src="js/article-detail.js?v=orva-1" defer></script>
   </head>
-  <body>
+  <body data-cms-page="detail-artikel">
     <!-- SVG SYMBOL SPRITE -->
     <svg width="0" height="0" style="position: absolute" aria-hidden="true">
       <defs>
@@ -40,7 +41,7 @@
     <header class="nav" id="nav">
       <div class="container">
         <a href="index.html" class="logo"
-          ><img src="images/logo.svg" alt="Lumira Property"
+          ><img src="images/orva-logo.svg" alt="ORVA"
         /></a>
         <nav class="nav-links" id="primary-menu" aria-label="Navigasi utama">
           <div class="nav-item">
@@ -94,21 +95,21 @@
       <div class="container article-detail-wrap">
         <nav class="article-crumb" aria-label="Breadcrumb">
           <ol>
-            <li><a href="index.html">Beranda</a></li>
-            <li><a href="articles.html">Artikel</a></li>
-            <li aria-current="page">Detail artikel</li>
+            <li><a href="index.html" data-cms-href="hero.href1" data-cms-text="hero.text1">Beranda</a></li>
+            <li><a href="articles.html" data-cms-href="hero.href2" data-cms-text="hero.text2">Artikel</a></li>
+            <li aria-current="page" data-cms-text="hero.text3">Detail artikel</li>
           </ol>
         </nav>
         <p class="article-detail-message" id="article-message">
-          Pilih artikel dari <a href="articles.html">daftar artikel</a>.
+          <span data-cms-text="hero.text4">Pilih artikel dari</span> <a href="articles.html" data-cms-href="hero.href3" data-cms-text="hero.text5">daftar artikel</a>.
         </p>
         <article id="article-detail" hidden>
           <header class="article-detail-header">
-            <a class="article-back" href="articles.html">Kembali ke artikel</a>
+            <a class="article-back" href="articles.html" data-cms-href="hero.href4" data-cms-text="hero.text6">Kembali ke artikel</a>
             <h1 id="detail-title"></h1>
             <div class="article-meta">
               <span class="article-topic" id="detail-category"></span>
-              <span>Lumira Property</span>
+              <span data-cms-text="hero.text7">ORVA</span>
               <span id="detail-reading-time"></span>
             </div>
           </header>
@@ -117,7 +118,7 @@
             <p class="article-intro" id="detail-intro"></p>
             <aside class="article-contents">
               <nav aria-labelledby="article-contents-title">
-                <h2 id="article-contents-title">Daftar isi</h2>
+                <h2 id="article-contents-title" data-cms-text="hero.text8">Daftar isi</h2>
                 <ol id="detail-contents"></ol>
               </nav>
             </aside>
@@ -131,7 +132,7 @@
     <footer>
       <div class="container foot-grid">
         <div>
-          <img src="images/logo.svg" alt="Lumira Property" />
+          <img src="images/orva-logo.svg" alt="ORVA" />
           <p>
             Agensi properti terpercaya untuk hunian premium, investasi, dan
             pengembangan aset di kawasan strategis Indonesia.
@@ -167,7 +168,7 @@
         </div>
       </div>
       <div class="container copy">
-        &copy; 2026 Lumira Property. Seluruh hak cipta dilindungi.
+        &copy; 2026 ORVA. Seluruh hak cipta dilindungi.
       </div>
     </footer>
   </body>

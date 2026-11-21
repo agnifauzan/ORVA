@@ -1,5 +1,5 @@
 (() => {
-  const storageKey = "lumira-theme";
+  const storageKey = "orva-theme";
   const root = document.documentElement;
   let savedTheme;
 

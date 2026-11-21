@@ -106,8 +106,8 @@
   box-shadow: var(--light-shadow);
 }
 
-[data-theme="light"] :is(.logo img, .foot-grid img[src="images/logo.svg"]) {
-  content: url("../images/logo-light.svg") / "Lumira Property";
+[data-theme="light"] :is(.logo img, .foot-grid img[src="images/orva-logo.svg"], .site-logo) {
+  content: var(--site-light-logo, url("../images/orva-logo-light.svg")) / "ORVA";
 }
 
 [data-theme="light"] :is(.nav-links a, .nav-item > a, .dropdown-menu a) {

@@ -3,26 +3,29 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Lumira Property — Temukan Tempatmu untuk Bertumbuh</title>
+    <title data-cms-text="seo.title">ORVA — Temukan Tempatmu untuk Bertumbuh</title>
     <meta
       name="description"
-      content="Agensi properti dengan agent profesional untuk membantu Anda membeli, menjual, dan menyewa hunian." />
-    <link rel="icon" type="image/svg+xml" href="images/favicon.svg" />
+      content="Agensi properti dengan agent profesional untuk membantu Anda membeli, menjual, dan menyewa hunian."  data-cms-content="seo.description"/>
+    <link rel="icon" type="image/svg+xml" href="images/orva-favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:wght@400;500;600&display=swap"
       rel="stylesheet" />
-    <script src="js/theme.js"></script>
+    <script src="js/theme.js?v=orva-1"></script>
     <link rel="stylesheet" href="css/style.css" />
-    <link rel="stylesheet" href="css/theme.css" />
-    <script src="js/main.js" defer></script>
-    <script src="js/property-api.js" defer></script>
-    <script src="js/properties.js?v=7" defer></script>
-    <script src="js/kpr.js" defer></script>
-    <script src="js/contact.js" defer></script>
+    <link rel="stylesheet" href="css/theme.css?v=orva-1" />
+    <script src="js/cms-api.js?v=orva-1" defer></script>
+    <script src="js/site-content.js?v=orva-1" defer></script>
+    <script src="js/main.js?v=orva-1" defer></script>
+    <script src="js/property-api.js?v=orva-1" defer></script>
+    <script src="js/properties.js?v=orva-1" defer></script>
+    <script src="js/kpr.js?v=orva-1" defer></script>
+    <script src="js/contact.js?v=orva-1" defer></script>
+    <script src="js/agents.js?v=orva-1" defer></script>
   </head>
-  <body>
+  <body data-cms-page="beranda">
     <svg width="0" height="0" style="position: absolute" aria-hidden="true">
       <defs>
         <symbol id="i-arrow" viewBox="0 0 24 24">
@@ -94,7 +97,7 @@
     <header class="nav" id="nav">
       <div class="container">
         <a href="index.html" class="logo"
-          ><img src="images/logo.svg" alt="Lumira Property"
+          ><img src="images/orva-logo.svg" alt="ORVA"
         /></a>
         <nav class="nav-links" id="primary-menu" aria-label="Navigasi utama">
           <div class="nav-item">
@@ -159,12 +162,12 @@
 
     <main>
       <!-- HERO -->
-      <section class="hero">
+      <section class="hero" data-cms-background="hero.background1">
         <div class="container hero-main">
           <div class="hero-copy">
-            <span class="eyebrow">Lebih dari sekadar rumah</span>
-            <h1>Temukan <em>tempatmu</em><br />untuk bertumbuh</h1>
-            <p>
+            <span class="eyebrow" data-cms-text="hero.text1">Lebih dari sekadar rumah</span>
+            <h1 data-cms-formatted="hero.formatted1">Temukan <em>tempatmu</em><br />untuk bertumbuh</h1>
+            <p data-cms-formatted="hero.formatted2">
               Properti pilihan. Agent berpengalaman.<br />Hunian yang sesuai
               dengan cara hidup Anda.
             </p>
@@ -204,14 +207,14 @@
               class="tab active"
               type="button"
               data-status="jual"
-              aria-pressed="true">
+              aria-pressed="true" data-cms-text="hero.text2">
               Beli
             </button>
             <button
               class="tab"
               type="button"
               data-status="sewa"
-              aria-pressed="false">
+              aria-pressed="false" data-cms-text="hero.text3">
               Sewa
             </button>
           </div>
@@ -219,42 +222,42 @@
             <input type="hidden" name="status" value="jual" />
             <div class="field">
               <div class="field-control">
-                <label for="lokasi">Lokasi</label>
+                <label for="lokasi" data-cms-text="hero.text4">Lokasi</label>
                 <select id="lokasi" name="lokasi">
-                  <option value="">Semua Lokasi</option>
-                  <option>Jakarta Selatan</option>
-                  <option>Jakarta Barat</option>
-                  <option>Bogor</option>
-                  <option>Tangerang Selatan</option>
-                  <option>Depok</option>
-                  <option>Tenjo</option>
-                  <option>Bekasi</option>
-                  <option>Bandung</option>
+                  <option value="" data-cms-text="hero.text5">Semua Lokasi</option>
+                  <option data-cms-text="hero.text6" value="Jakarta Selatan">Jakarta Selatan</option>
+                  <option data-cms-text="hero.text7" value="Jakarta Barat">Jakarta Barat</option>
+                  <option data-cms-text="hero.text8" value="Bogor">Bogor</option>
+                  <option data-cms-text="hero.text9" value="Tangerang Selatan">Tangerang Selatan</option>
+                  <option data-cms-text="hero.text10" value="Depok">Depok</option>
+                  <option data-cms-text="hero.text11" value="Tenjo">Tenjo</option>
+                  <option data-cms-text="hero.text12" value="Bekasi">Bekasi</option>
+                  <option data-cms-text="hero.text13" value="Bandung">Bandung</option>
                 </select>
               </div>
             </div>
             <div class="field">
               <div class="field-control">
-                <label for="tipe">Tipe Properti</label>
+                <label for="tipe" data-cms-text="hero.text14">Tipe Properti</label>
                 <select id="tipe" name="type">
-                  <option value="">Semua Tipe</option>
-                  <option value="rumah">Rumah</option>
-                  <option value="townhouse">Townhouse</option>
-                  <option value="penthouse">Penthouse</option>
-                  <option value="villa">Villa</option>
-                  <option value="apartemen">Apartemen</option>
+                  <option value="" data-cms-text="hero.text15">Semua Tipe</option>
+                  <option value="rumah" data-cms-text="hero.text16">Rumah</option>
+                  <option value="townhouse" data-cms-text="hero.text17">Townhouse</option>
+                  <option value="penthouse" data-cms-text="hero.text18">Penthouse</option>
+                  <option value="villa" data-cms-text="hero.text19">Villa</option>
+                  <option value="apartemen" data-cms-text="hero.text20">Apartemen</option>
                 </select>
               </div>
             </div>
             <div class="field">
               <div class="field-control">
-                <label for="harga">Rentang Harga</label>
+                <label for="harga" data-cms-text="hero.text21">Rentang Harga</label>
                 <select id="harga" name="harga">
-                  <option value="">Semua Harga</option>
+                  <option value="" data-cms-text="hero.text22">Semua Harga</option>
                 </select>
               </div>
             </div>
-            <button class="btn btn-gold" type="submit">
+            <button class="btn btn-gold" type="submit" data-cms-text="hero.text23">
               Cari Properti <svg class="icon"><use href="#i-search" /></svg>
             </button>
           </form>
@@ -266,17 +269,19 @@
         <div class="container">
           <div class="sec-head">
             <div>
-              <span class="eyebrow">Properti Pilihan</span>
-              <h2>Hunian istimewa.<br /><em>Gaya hidup berkelas.</em></h2>
+              <span class="eyebrow" data-cms-text="content.text1">Properti Pilihan</span>
+              <h2 data-cms-formatted="content.formatted1">Hunian istimewa.<br /><em>Gaya hidup berkelas.</em></h2>
             </div>
             <a href="properties.html" class="see-all"
-              >Lihat semua properti
+               data-cms-href="content.href1" data-cms-text="content.text2">Lihat semua properti
               <svg class="icon" style="width: 15px; height: 15px">
                 <use href="#i-arrow" /></svg
             ></a>
           </div>
 
-          <div class="grid-4" id="homepage-property-results">
+          <p data-property-load-status role="status">Memuat properti…</p>
+          <div class="grid-4" id="homepage-property-results"></div>
+          <template id="homepage-property-template">
             <article class="pcard">
               <div class="pimg">
                 <img src="images/property-1.svg" alt="Villa Tepi Danau" /><span
@@ -304,193 +309,7 @@
                 <div class="price">Rp 8,9 M</div>
               </div>
             </article>
-            <article class="pcard">
-              <div class="pimg">
-                <img src="images/property-2.svg" alt="Penthouse Skyline" /><span
-                  class="badge"
-                  >Dijual</span
-                ><button class="heart" aria-label="Simpan">
-                  <svg class="icon"><use href="#i-heart" /></svg>
-                </button>
-              </div>
-              <div class="pbody">
-                <h3>
-                  <a
-                    class="property-card-link"
-                    href="property-detail.html?unit=penthouse-skyline"
-                    >Penthouse Skyline</a
-                  >
-                </h3>
-                <div class="loc">
-                  <svg class="icon"><use href="#i-pin" /></svg>Jakarta Selatan
-                </div>
-                <div class="mini">
-                  <span>3 KT</span><span>3 KM</span><span>240 m²</span>
-                </div>
-                <div class="price">Rp 12,5 M</div>
-              </div>
-            </article>
-            <article class="pcard">
-              <div class="pimg">
-                <img
-                  src="images/property-3.svg"
-                  alt="Rumah Modern Cluster" /><span class="badge">Disewa</span
-                ><button class="heart" aria-label="Simpan">
-                  <svg class="icon"><use href="#i-heart" /></svg>
-                </button>
-              </div>
-              <div class="pbody">
-                <h3>
-                  <a
-                    class="property-card-link"
-                    href="property-detail.html?unit=rumah-modern-cluster"
-                    >Rumah Modern Cluster</a
-                  >
-                </h3>
-                <div class="loc">
-                  <svg class="icon"><use href="#i-pin" /></svg>BSD City,
-                  Tangerang Selatan
-                </div>
-                <div class="mini">
-                  <span>4 KT</span><span>3 KM</span><span>210 m²</span>
-                </div>
-                <div class="price">Rp 45 Jt <small>/ bulan</small></div>
-              </div>
-            </article>
-            <article class="pcard">
-              <div class="pimg">
-                <img src="images/property-4.svg" alt="Townhouse Tropis" /><span
-                  class="badge"
-                  >Dijual</span
-                ><button class="heart" aria-label="Simpan">
-                  <svg class="icon"><use href="#i-heart" /></svg>
-                </button>
-              </div>
-              <div class="pbody">
-                <h3>
-                  <a
-                    class="property-card-link"
-                    href="property-detail.html?unit=townhouse-tropis"
-                    >Townhouse Tropis</a
-                  >
-                </h3>
-                <div class="loc">
-                  <svg class="icon"><use href="#i-pin" /></svg>Cilandak, Jakarta
-                  Selatan
-                </div>
-                <div class="mini">
-                  <span>3 KT</span><span>3 KM</span><span>160 m²</span>
-                </div>
-                <div class="price">Rp 3,2 M</div>
-              </div>
-            </article>
-            <article class="pcard">
-              <div class="pimg">
-                <img src="images/property-1.svg" alt="Villa Tepi Danau" /><span
-                  class="badge"
-                  >Dijual</span
-                ><button class="heart" aria-label="Simpan">
-                  <svg class="icon"><use href="#i-heart" /></svg>
-                </button>
-              </div>
-              <div class="pbody">
-                <h3>
-                  <a
-                    class="property-card-link"
-                    href="property-detail.html?unit=villa-tepi-danau"
-                    >Villa Tepi Danau</a
-                  >
-                </h3>
-                <div class="loc">
-                  <svg class="icon"><use href="#i-pin" /></svg>Sentul, Bogor
-                </div>
-                <div class="mini">
-                  <span>4 KT</span><span>4 KM</span><span>380 m²</span>
-                </div>
-                <div class="price">Rp 8,9 M</div>
-              </div>
-            </article>
-            <article class="pcard">
-              <div class="pimg">
-                <img src="images/property-2.svg" alt="Penthouse Skyline" /><span
-                  class="badge"
-                  >Dijual</span
-                ><button class="heart" aria-label="Simpan">
-                  <svg class="icon"><use href="#i-heart" /></svg>
-                </button>
-              </div>
-              <div class="pbody">
-                <h3>
-                  <a
-                    class="property-card-link"
-                    href="property-detail.html?unit=penthouse-skyline"
-                    >Penthouse Skyline</a
-                  >
-                </h3>
-                <div class="loc">
-                  <svg class="icon"><use href="#i-pin" /></svg>Jakarta Selatan
-                </div>
-                <div class="mini">
-                  <span>3 KT</span><span>3 KM</span><span>240 m²</span>
-                </div>
-                <div class="price">Rp 12,5 M</div>
-              </div>
-            </article>
-            <article class="pcard">
-              <div class="pimg">
-                <img
-                  src="images/property-3.svg"
-                  alt="Rumah Modern Cluster" /><span class="badge">Disewa</span
-                ><button class="heart" aria-label="Simpan">
-                  <svg class="icon"><use href="#i-heart" /></svg>
-                </button>
-              </div>
-              <div class="pbody">
-                <h3>
-                  <a
-                    class="property-card-link"
-                    href="property-detail.html?unit=rumah-modern-cluster"
-                    >Rumah Modern Cluster</a
-                  >
-                </h3>
-                <div class="loc">
-                  <svg class="icon"><use href="#i-pin" /></svg>BSD City,
-                  Tangerang Selatan
-                </div>
-                <div class="mini">
-                  <span>4 KT</span><span>3 KM</span><span>210 m²</span>
-                </div>
-                <div class="price">Rp 45 Jt <small>/ bulan</small></div>
-              </div>
-            </article>
-            <article class="pcard">
-              <div class="pimg">
-                <img src="images/property-4.svg" alt="Townhouse Tropis" /><span
-                  class="badge"
-                  >Dijual</span
-                ><button class="heart" aria-label="Simpan">
-                  <svg class="icon"><use href="#i-heart" /></svg>
-                </button>
-              </div>
-              <div class="pbody">
-                <h3>
-                  <a
-                    class="property-card-link"
-                    href="property-detail.html?unit=townhouse-tropis"
-                    >Townhouse Tropis</a
-                  >
-                </h3>
-                <div class="loc">
-                  <svg class="icon"><use href="#i-pin" /></svg>Cilandak, Jakarta
-                  Selatan
-                </div>
-                <div class="mini">
-                  <span>3 KT</span><span>3 KM</span><span>160 m²</span>
-                </div>
-                <div class="price">Rp 3,2 M</div>
-              </div>
-            </article>
-          </div>
+          </template>
           <div class="dots"><i class="on"></i><i></i><i></i><i></i></div>
         </div>
       </section>
@@ -499,15 +318,15 @@
       <section class="usp" aria-labelledby="usp-title">
         <div class="container usp-layout">
           <div>
-            <span class="eyebrow">Why Choose Us</span>
-            <h2 id="usp-title">Lebih dari sekadar <em>Menemukan Hunian</em></h2>
+            <span class="eyebrow" data-cms-text="contact.text1">Why Choose Us</span>
+            <h2 id="usp-title" data-cms-formatted="contact.formatted1">Lebih dari sekadar <em>Menemukan Hunian</em></h2>
             <div class="features">
               <div class="fcard">
                 <svg class="icon" aria-hidden="true">
                   <use href="#i-diamond" />
                 </svg>
-                <h3>Pendampingan Ahli</h3>
-                <p>
+                <h3 data-cms-text="contact.text2">Pendampingan Ahli</h3>
+                <p data-cms-text="contact.text3">
                   Agent lokal yang memahami kawasan, harga pasar, dan proses
                   legal.
                 </p>
@@ -516,16 +335,16 @@
                 <svg class="icon" aria-hidden="true">
                   <use href="#i-home" />
                 </svg>
-                <h3>Listing Terverifikasi</h3>
-                <p>
+                <h3 data-cms-text="contact.text4">Listing Terverifikasi</h3>
+                <p data-cms-text="contact.text5">
                   Properti dipilih dan diperiksa agar sesuai dengan gaya hidup
                   Anda.
                 </p>
               </div>
               <div class="fcard">
                 <svg class="icon" aria-hidden="true"><use href="#i-key" /></svg>
-                <h3>Proses Tanpa Ribet</h3>
-                <p>
+                <h3 data-cms-text="contact.text6">Proses Tanpa Ribet</h3>
+                <p data-cms-text="contact.text7">
                   Dari survei lokasi sampai serah terima kunci, kami
                   mendampingi.
                 </p>
@@ -534,8 +353,8 @@
                 <svg class="icon" aria-hidden="true">
                   <use href="#i-chart" />
                 </svg>
-                <h3>Simulasi KPR</h3>
-                <p>
+                <h3 data-cms-text="contact.text8">Simulasi KPR</h3>
+                <p data-cms-text="contact.text9">
                   Hitung estimasi cicilan sebelum memutuskan, langsung di setiap
                   listing.
                 </p>
@@ -549,7 +368,7 @@
               width="450"
               height="360"
               loading="lazy"
-              decoding="async" />
+              decoding="async"  data-cms-image="contact.image1"/>
           </div>
         </div>
       </section>
@@ -558,9 +377,9 @@
       <section class="kpr" id="kpr">
         <div class="container kpr-grid">
           <div>
-            <span class="eyebrow">Simulasi KPR</span>
-            <h2>Berapa <em>cicilan KPR Anda?</em></h2>
-            <p>
+            <span class="eyebrow" data-cms-text="calculator.text1">Simulasi KPR</span>
+            <h2 data-cms-formatted="calculator.formatted1">Berapa <em>cicilan KPR Anda?</em></h2>
+            <p data-cms-text="calculator.text2">
               Masukkan harga rumah yang Anda incar, uang muka, jangka waktu, dan
               suku bunga untuk melihat perkiraan cicilan per bulan. Coba ubah
               angkanya untuk menemukan cicilan yang sesuai anggaran Anda.
@@ -569,38 +388,38 @@
           <div class="calc">
             <div class="calc-grid">
               <div class="cfield">
-                <label for="c-harga">Harga Properti</label
+                <label for="c-harga" data-cms-text="calculator.text3">Harga Properti</label
                 ><input
                   id="c-harga"
                   placeholder="Rp 2.000.000.000"
-                  inputmode="numeric" />
+                  inputmode="numeric" data-cms-placeholder="calculator.placeholder1"/>
               </div>
               <div class="cfield">
-                <label for="c-dp">Uang Muka (%)</label
-                ><input id="c-dp" placeholder="20%" inputmode="decimal" />
+                <label for="c-dp" data-cms-text="calculator.text4">Uang Muka (%)</label
+                ><input id="c-dp" placeholder="20%" inputmode="decimal" data-cms-placeholder="calculator.placeholder2"/>
               </div>
               <div class="cfield">
-                <label for="c-tenor">Jangka Waktu (tahun)</label
+                <label for="c-tenor" data-cms-text="calculator.text5">Jangka Waktu (tahun)</label
                 ><input
                   id="c-tenor"
                   placeholder="20 tahun"
-                  inputmode="numeric" />
+                  inputmode="numeric" data-cms-placeholder="calculator.placeholder3"/>
               </div>
               <div class="cfield">
-                <label for="c-bunga">Suku Bunga Tahunan (%)</label
+                <label for="c-bunga" data-cms-text="calculator.text6">Suku Bunga Tahunan (%)</label
                 ><input
                   id="c-bunga"
                   placeholder="7% per tahun"
-                  inputmode="decimal" />
+                  inputmode="decimal" data-cms-placeholder="calculator.placeholder4"/>
               </div>
             </div>
             <div class="result">
-              <span class="eyebrow">Perkiraan Cicilan</span>
+              <span class="eyebrow" data-cms-text="calculator.text7">Perkiraan Cicilan</span>
               <div class="amt" id="hasil">
-                <span data-kpr-payment>—</span><small> / bulan</small>
+                <span data-kpr-payment>—</span><small data-cms-text="calculator.text8"> / bulan</small>
               </div>
             </div>
-            <p class="disclaimer">
+            <p class="disclaimer" data-cms-text="calculator.text9">
               Gunakan hasil ini sebagai gambaran awal. Besaran cicilan dan
               ketentuan KPR mengikuti penawaran dari bank pilihan Anda.
             </p>
@@ -621,11 +440,11 @@
               width="450"
               height="360"
               loading="lazy"
-              decoding="async" />
+              decoding="async"  data-cms-image="consultation.image1"/>
           </div>
           <div class="consultation-content">
-            <span class="eyebrow">Formulir</span>
-            <h2 id="consultation-title">
+            <span class="eyebrow" data-cms-text="consultation.text1">Formulir</span>
+            <h2 id="consultation-title" data-cms-formatted="consultation.formatted1">
               Reservasi <em>Konsultasi Pribadi</em>
             </h2>
             <div class="form-card">
@@ -634,11 +453,11 @@
                 id="contact-form"
                 action="mailto:advisory@lumiraproperty.com"
                 method="post"
-                enctype="text/plain">
+                enctype="text/plain" data-cms-action="consultation.action1">
                 <!-- NAMA & WHATSAPP -->
                 <div class="form-row">
                   <div class="form-group">
-                    <label for="c-name">Nama Lengkap *</label>
+                    <label for="c-name" data-cms-text="consultation.text2">Nama Lengkap *</label>
                     <div class="input-wrap">
                       <input
                         type="text"
@@ -646,7 +465,7 @@
                         name="name"
                         autocomplete="name"
                         placeholder="Contoh: Bpk. Raden Soedirja"
-                        required />
+                        required data-cms-placeholder="consultation.placeholder1"/>
                       <span class="input-icon">
                         <svg class="icon" aria-hidden="true">
                           <use href="#i-id-card" />
@@ -655,7 +474,7 @@
                     </div>
                   </div>
                   <div class="form-group">
-                    <label for="c-phone">Nomor WhatsApp / Seluler *</label>
+                    <label for="c-phone" data-cms-text="consultation.text3">Nomor WhatsApp / Seluler *</label>
                     <div class="input-wrap">
                       <input
                         type="tel"
@@ -663,7 +482,7 @@
                         name="phone"
                         autocomplete="tel"
                         placeholder="+62 812 3456 7890"
-                        required />
+                        required data-cms-placeholder="consultation.placeholder2"/>
                       <span class="input-icon">
                         <svg class="icon" aria-hidden="true">
                           <use href="#i-mobile" />
@@ -675,7 +494,7 @@
 
                 <!-- ALAMAT EMAIL -->
                 <div class="form-group">
-                  <label for="c-email">Alamat Email Resmi *</label>
+                  <label for="c-email" data-cms-text="consultation.text4">Alamat Email Resmi *</label>
                   <div class="input-wrap">
                     <input
                       type="email"
@@ -683,7 +502,7 @@
                       name="email"
                       autocomplete="email"
                       placeholder="nama@perusahaan.co.id atau alamat pribadi"
-                      required />
+                      required data-cms-placeholder="consultation.placeholder3"/>
                     <span class="input-icon">
                       <svg class="icon"><use href="#i-mail" /></svg>
                     </span>
@@ -692,7 +511,7 @@
 
                 <!-- TUJUAN KONSULTASI -->
                 <fieldset class="purpose-field">
-                  <legend>Tujuan Konsultasi</legend>
+                  <legend data-cms-text="consultation.text5">Tujuan Konsultasi</legend>
                   <div class="purpose-grid">
                     <label class="purpose-option">
                       <input
@@ -700,61 +519,61 @@
                         name="purpose"
                         value="Beli Properti"
                         checked />
-                      <span>Beli Properti</span>
+                      <span data-cms-text="consultation.text6">Beli Properti</span>
                     </label>
                     <label class="purpose-option">
                       <input
                         type="radio"
                         name="purpose"
                         value="Jual Properti" />
-                      <span>Jual Properti</span>
+                      <span data-cms-text="consultation.text7">Jual Properti</span>
                     </label>
                     <label class="purpose-option">
                       <input type="radio" name="purpose" value="Sewa Mewah" />
-                      <span>Sewa Mewah</span>
+                      <span data-cms-text="consultation.text8">Sewa Mewah</span>
                     </label>
                     <label class="purpose-option">
                       <input type="radio" name="purpose" value="Portofolio" />
-                      <span>Portofolio</span>
+                      <span data-cms-text="consultation.text9">Portofolio</span>
                     </label>
                   </div>
                 </fieldset>
 
                 <div class="form-group">
                   <label for="c-notes"
-                    >Kriteria Khusus atau Permintaan Tertentu</label
+                     data-cms-text="consultation.text10">Kriteria Khusus atau Permintaan Tertentu</label
                   >
                   <div class="input-wrap">
                     <textarea
                       id="c-notes"
                       name="notes"
                       rows="4"
-                      placeholder="Sebutkan spesifikasi: luas tanah minimal, private pool, marina berth, skyline view, atau jadwal konsultasi yang diinginkan..."></textarea>
+                      placeholder="Sebutkan spesifikasi: luas tanah minimal, private pool, marina berth, skyline view, atau jadwal konsultasi yang diinginkan..." data-cms-placeholder="consultation.placeholder4"></textarea>
                   </div>
                 </div>
 
                 <!-- SUBMIT BUTTON -->
-                <button type="submit" class="btn btn-gold btn-submit">
+                <button type="submit" class="btn btn-gold btn-submit" data-cms-text="consultation.text11">
                   Kirim Permintaan Konsultasi
                   <svg class="icon" aria-hidden="true">
                     <use href="#i-arrow" />
                   </svg>
                 </button>
 
-                <p class="security-note" id="contact-status" role="status">
+                <p class="security-note" id="contact-status" role="status" data-cms-text="consultation.text12">
                   Permintaan akan dibuka sebagai draf di aplikasi email Anda.
                 </p>
 
                 <!-- SECURITY DISCLAIMER -->
                 <div class="security-note">
                   <svg class="icon"><use href="#i-shield-check" /></svg>
-                  <span>
+                  <span data-cms-text="consultation.text13">
                     Data Anda dijamin kerahasiaannya di bawah standar
-                    Non-Disclosure Agreement Lumira Private Client.
+                    Non-Disclosure Agreement ORVA Private Client.
                   </span>
                 </div>
               </form>
-              <noscript>
+              <noscript data-cms-text="consultation.text14">
                 <a href="mailto:advisory@lumiraproperty.com"
                   >Hubungi kami via email untuk reservasi konsultasi.</a
                 >
@@ -769,16 +588,17 @@
         <div class="container">
           <div class="sec-head">
             <div>
-              <span class="eyebrow">Agent Kami</span>
-              <h2>Agent profesional,<br />siap mendampingi Anda.</h2>
+              <span class="eyebrow" data-cms-text="agents.text1">Agent Kami</span>
+              <h2 data-cms-formatted="agents.formatted1">Agent profesional,<br />siap mendampingi Anda.</h2>
             </div>
             <a href="#" class="see-all"
-              >Lihat semua agent
+               data-cms-href="agents.href1" data-cms-text="agents.text2">Lihat semua agent
               <svg class="icon" style="width: 15px; height: 15px">
                 <use href="#i-arrow" /></svg
             ></a>
           </div>
-          <div class="grid-3">
+          <div class="grid-3"></div>
+          <template id="agent-card-template">
             <article class="acard">
               <div class="aimg">
                 <img src="images/agent.jpg" alt="Ade Nurjamil" />
@@ -804,57 +624,7 @@
                 >
               </div>
             </article>
-            <article class="acard">
-              <div class="aimg">
-                <img src="images/agent.jpg" alt="Acep Lutfi" />
-              </div>
-              <div class="ainfo">
-                <div>
-                  <h4>Acep Lutfi</h4>
-                  <span class="aspec">Spesialis [Area]</span>
-                </div>
-                <div class="aexp">
-                  <strong>10+</strong>
-                  <span>Experience</span>
-                </div>
-              </div>
-              <div class="abtns">
-                <a href="#" class="btn btn-outline">Lihat Profil</a>
-                <a
-                  href="https://wa.me/6281234567890"
-                  class="btn btn-gold"
-                  target="_blank"
-                  rel="noopener"
-                  >Chat WhatsApp</a
-                >
-              </div>
-            </article>
-            <article class="acard">
-              <div class="aimg">
-                <img src="images/agent.jpg" alt="Agni Pauzan" />
-              </div>
-              <div class="ainfo">
-                <div>
-                  <h4>Agni Pauzan</h4>
-                  <span class="aspec">Spesialis [Area]</span>
-                </div>
-                <div class="aexp">
-                  <strong>10+</strong>
-                  <span>Experience</span>
-                </div>
-              </div>
-              <div class="abtns">
-                <a href="#" class="btn btn-outline">Lihat Profil</a>
-                <a
-                  href="https://wa.me/6281234567890"
-                  class="btn btn-gold"
-                  target="_blank"
-                  rel="noopener"
-                  >Chat WhatsApp</a
-                >
-              </div>
-            </article>
-          </div>
+          </template>
         </div>
       </section>
 
@@ -863,19 +633,19 @@
         <div class="container">
           <div class="cta-box">
             <div>
-              <span class="eyebrow">Titip Jual / Sewa</span>
-              <h2>Ingin menjual atau menyewakan properti Anda?</h2>
-              <p>
+              <span class="eyebrow" data-cms-text="listing.text1">Titip Jual / Sewa</span>
+              <h2 data-cms-text="listing.text2">Ingin menjual atau menyewakan properti Anda?</h2>
+              <p data-cms-text="listing.text3">
                 Titipkan ke agent kami dan dapatkan estimasi harga berdasarkan
                 kondisi pasar di kawasan Anda.
               </p>
             </div>
             <div class="cta-actions">
               <a href="contact.html#konsultasi" class="btn btn-gold"
-                >Titip Properti <svg class="icon"><use href="#i-arrow" /></svg
+                 data-cms-href="listing.href1" data-cms-text="listing.text4">Titip Properti <svg class="icon"><use href="#i-arrow" /></svg
               ></a>
               <a href="https://wa.me/6281234567890" class="btn btn-outline"
-                >Chat WhatsApp</a
+                 data-cms-href="listing.href2" data-cms-text="listing.text5">Chat WhatsApp</a
               >
             </div>
           </div>
@@ -888,7 +658,7 @@
       <div class="container">
         <div class="foot-grid">
           <div>
-            <img src="images/logo.svg" alt="Lumira Property" />
+            <img src="images/orva-logo.svg" alt="ORVA" />
             <p>
               Agensi properti dengan agent profesional untuk membantu Anda
               membeli, menjual, dan menyewa hunian.
@@ -924,7 +694,7 @@
           </div>
         </div>
         <div class="copy">
-          © 2026 Lumira Property. Seluruh hak cipta dilindungi.
+          © 2026 ORVA. Seluruh hak cipta dilindungi.
         </div>
       </div>
     </footer>

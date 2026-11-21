@@ -1,22 +1,37 @@
-(() => {
+(async () => {
   const slug = new URLSearchParams(location.search).get("slug");
   const message = document.getElementById("article-message");
 
-  if (!Object.hasOwn(articleContent, slug)) {
+  let article;
+  try {
+    [article] = await Promise.all([cmsApi.bySlug("articles", slug), siteContent.ready]);
+  } catch (error) {
+    console.error("Gagal memuat detail artikel:", error);
+    message.prepend("Artikel belum bisa dimuat. ");
+    return;
+  }
+  if (!article) {
     if (slug) message.prepend("Artikel tidak ditemukan. ");
     return;
   }
 
-  const { title, category, image, intro, sections } = articleContent[slug];
+  const { title, category, coverImage, intro, sections = [] } = article;
   const words = [intro, ...sections.map(({ heading, body }) => `${heading} ${body}`)]
     .join(" ").split(/\s+/).length;
 
-  document.title = `${title} — Lumira Property`;
+  document.title = `${title} — ${document.querySelector(".logo img").alt}`;
   document.querySelector('meta[name="description"]').content = intro;
   document.getElementById("detail-title").textContent = title;
   document.getElementById("detail-category").textContent = category;
   document.getElementById("detail-reading-time").textContent = `${Math.ceil(words / 200)} menit baca`;
-  document.getElementById("detail-image").src = image;
+  const image = document.getElementById("detail-image");
+  const cover = cmsApi.media(coverImage);
+  if (cover) {
+    image.src = cover.src;
+    image.alt = cover.alt;
+  } else {
+    image.hidden = true;
+  }
   document.getElementById("detail-intro").textContent = intro;
 
   const contents = document.getElementById("detail-contents");
@@ -35,9 +50,12 @@
     const subtitle = document.createElement("h2");
     subtitle.id = id;
     subtitle.textContent = heading;
-    const paragraph = document.createElement("p");
-    paragraph.textContent = body;
-    section.append(subtitle, paragraph);
+    section.append(subtitle);
+    for (const line of body.split(/\r?\n\s*\r?\n/)) {
+      const paragraph = document.createElement("p");
+      paragraph.textContent = line;
+      section.append(paragraph);
+    }
     prose.append(section);
   });
 

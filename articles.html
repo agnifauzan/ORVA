@@ -3,24 +3,25 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Artikel &amp; Edukasi — Lumira Property</title>
+    <title data-cms-text="seo.title">Artikel &amp; Edukasi — ORVA</title>
     <meta
       name="description"
-      content="Panduan perumahan dari Lumira Property, mulai dari survei rumah dan KPR hingga desain hunian dan pilihan lingkungan." />
-    <link rel="icon" type="image/svg+xml" href="images/favicon.svg" />
+      content="Panduan perumahan dari ORVA, mulai dari survei rumah dan KPR hingga desain hunian dan pilihan lingkungan."  data-cms-content="seo.description"/>
+    <link rel="icon" type="image/svg+xml" href="images/orva-favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:wght@400;500;600&display=swap"
       rel="stylesheet" />
-    <script src="js/theme.js"></script>
+    <script src="js/theme.js?v=orva-1"></script>
     <link rel="stylesheet" href="css/style.css" />
-    <link rel="stylesheet" href="css/theme.css" />
-    <script src="js/main.js" defer></script>
-    <script src="js/article-content.js" defer></script>
-    <script src="js/articles.js" defer></script>
+    <link rel="stylesheet" href="css/theme.css?v=orva-1" />
+    <script src="js/cms-api.js?v=orva-1" defer></script>
+    <script src="js/site-content.js?v=orva-1" defer></script>
+    <script src="js/main.js?v=orva-1" defer></script>
+    <script src="js/articles.js?v=orva-1" defer></script>
   </head>
-  <body>
+  <body data-cms-page="halaman-artikel">
     <!-- SVG SYMBOL SPRITE -->
     <svg width="0" height="0" style="position: absolute" aria-hidden="true">
       <defs>
@@ -40,7 +41,7 @@
     <header class="nav" id="nav">
       <div class="container">
         <a href="index.html" class="logo"
-          ><img src="images/logo.svg" alt="Lumira Property"
+          ><img src="images/orva-logo.svg" alt="ORVA"
         /></a>
         <nav class="nav-links" id="primary-menu" aria-label="Navigasi utama">
           <div class="nav-item">
@@ -106,12 +107,12 @@
     <main>
       <section class="article-hero" aria-labelledby="article-title">
         <div class="container">
-          <span class="eyebrow">ARTICLE</span>
+          <span class="eyebrow" data-cms-text="hero.text1">ARTICLE</span>
 
-          <h1 id="article-title">
+          <h1 id="article-title" data-cms-formatted="hero.formatted1" data-cms-emphasis="gold">
             Artikel <span class="gold"> dan Edukasi</span>
           </h1>
-          <p class="article-lead">
+          <p class="article-lead" data-cms-text="hero.text2">
             Panduan memilih, membeli, dan menata hunian untuk kebutuhan
             sehari-hari.
           </p>
@@ -120,7 +121,7 @@
 
       <section class="article-section" aria-labelledby="article-list-title">
         <div class="container">
-          <h2 id="article-list-title">Jelajahi artikel</h2>
+          <h2 id="article-list-title" data-cms-text="content.text1">Jelajahi artikel</h2>
 
           <form
             class="article-tools"
@@ -131,13 +132,13 @@
               <input
                 id="article-query"
                 type="search"
-                placeholder="Contoh: KPR atau denah rumah" />
+                placeholder="Contoh: KPR atau denah rumah" data-cms-placeholder="content.placeholder1"/>
             </div>
             <div class="sort-select-wrap article-category">
-              <label for="article-category">Kategori</label>
+              <label for="article-category" data-cms-text="content.text2">Kategori</label>
               <span class="sort-control">
                 <select id="article-category" class="sort-select">
-                  <option value="">Semua kategori</option>
+                  <option value="" data-cms-text="content.text3">Semua kategori</option>
                   <option>Panduan Beli</option>
                   <option>Pembiayaan</option>
                   <option>Lingkungan</option>
@@ -150,19 +151,17 @@
             </div>
           </form>
 
-          <p class="article-count" id="article-count" role="status">
+          <p class="article-count" id="article-count" role="status" data-cms-text="content.text4">
             8 artikel ditampilkan
           </p>
 
-          <div class="grid-4 article-grid" id="article-results">
+          <div class="grid-4 article-grid" id="article-results"></div>
+          <template id="article-card-template">
             <article
-              class="article-card"
-              aria-labelledby="cek-sebelum-survei"
-              data-category="Panduan Beli">
+              class="article-card">
               <a
                 class="article-card-link"
-                href="article-detail.html?slug=cek-sebelum-survei"
-                aria-labelledby="cek-sebelum-survei">
+                href="article-detail.html?slug=cek-sebelum-survei">
                 <img
                   class="article-card-image"
                   src="images/property-villa.jpg"
@@ -170,7 +169,7 @@
                   loading="lazy" />
                 <div class="article-card-content">
                   <span class="eyebrow">Panduan Beli</span>
-                  <h3 id="cek-sebelum-survei">
+                  <h3>
                     7 hal yang perlu dicek saat survei rumah
                   </h3>
                   <p>
@@ -180,194 +179,12 @@
                 </div>
               </a>
             </article>
-
-            <article
-              class="article-card"
-              aria-labelledby="membandingkan-kpr"
-              data-category="Pembiayaan">
-              <a
-                class="article-card-link"
-                href="article-detail.html?slug=membandingkan-kpr"
-                aria-labelledby="membandingkan-kpr">
-                <img
-                  class="article-card-image"
-                  src="images/hero-mockup.jpg"
-                  alt=""
-                  loading="lazy" />
-                <div class="article-card-content">
-                  <span class="eyebrow">Pembiayaan</span>
-                  <h3 id="membandingkan-kpr">
-                    Cara membaca simulasi cicilan KPR
-                  </h3>
-                  <p>
-                    Kenali komponen yang perlu dicatat saat membandingkan dua
-                    simulasi cicilan.
-                  </p>
-                </div>
-              </a>
-            </article>
-
-            <article
-              class="article-card"
-              aria-labelledby="memilih-lingkungan"
-              data-category="Lingkungan">
-              <a
-                class="article-card-link"
-                href="article-detail.html?slug=memilih-lingkungan"
-                aria-labelledby="memilih-lingkungan">
-                <img
-                  class="article-card-image"
-                  src="images/hero.jpg"
-                  alt=""
-                  loading="lazy" />
-                <div class="article-card-content">
-                  <span class="eyebrow">Lingkungan</span>
-                  <h3 id="memilih-lingkungan">
-                    Memilih lingkungan rumah untuk keluarga
-                  </h3>
-                  <p>
-                    Uji jarak tempuh dan fasilitas sekitar dengan rutinitas
-                    keluarga sehari-hari.
-                  </p>
-                </div>
-              </a>
-            </article>
-
-            <article
-              class="article-card"
-              aria-labelledby="denah-rumah-compact"
-              data-category="Desain Hunian">
-              <a
-                class="article-card-link"
-                href="article-detail.html?slug=denah-rumah-compact"
-                aria-labelledby="denah-rumah-compact">
-                <img
-                  class="article-card-image"
-                  src="images/about-villa.jpg"
-                  alt=""
-                  loading="lazy" />
-                <div class="article-card-content">
-                  <span class="eyebrow">Desain Hunian</span>
-                  <h3 id="denah-rumah-compact">
-                    Membaca denah rumah berukuran compact
-                  </h3>
-                  <p>
-                    Perhatikan ukuran furnitur dan jalur berjalan sebelum
-                    memilih denah.
-                  </p>
-                </div>
-              </a>
-            </article>
-
-            <article
-              class="article-card"
-              aria-labelledby="rumah-baru-atau-sekunder"
-              data-category="Panduan Beli">
-              <a
-                class="article-card-link"
-                href="article-detail.html?slug=rumah-baru-atau-sekunder"
-                aria-labelledby="rumah-baru-atau-sekunder">
-                <img
-                  class="article-card-image"
-                  src="images/hero-mockup.jpg"
-                  alt=""
-                  loading="lazy" />
-                <div class="article-card-content">
-                  <span class="eyebrow">Panduan Beli</span>
-                  <h3 id="rumah-baru-atau-sekunder">
-                    Rumah baru atau sekunder, apa yang perlu dibandingkan?
-                  </h3>
-                  <p>
-                    Bandingkan waktu pindah, kesiapan bangunan, dan pekerjaan
-                    tambahan yang perlu dilakukan.
-                  </p>
-                </div>
-              </a>
-            </article>
-
-            <article
-              class="article-card"
-              aria-labelledby="biaya-pindah-rumah"
-              data-category="Pembiayaan">
-              <a
-                class="article-card-link"
-                href="article-detail.html?slug=biaya-pindah-rumah"
-                aria-labelledby="biaya-pindah-rumah">
-                <img
-                  class="article-card-image"
-                  src="images/about-villa.jpg"
-                  alt=""
-                  loading="lazy" />
-                <div class="article-card-content">
-                  <span class="eyebrow">Pembiayaan</span>
-                  <h3 id="biaya-pindah-rumah">
-                    Menyusun daftar biaya sebelum pindah rumah
-                  </h3>
-                  <p>
-                    Pisahkan kebutuhan sebelum serah terima, saat pindah, dan
-                    setelah rumah ditempati.
-                  </p>
-                </div>
-              </a>
-            </article>
-
-            <article
-              class="article-card"
-              aria-labelledby="orientasi-cahaya-udara"
-              data-category="Desain Hunian">
-              <a
-                class="article-card-link"
-                href="article-detail.html?slug=orientasi-cahaya-udara"
-                aria-labelledby="orientasi-cahaya-udara">
-                <img
-                  class="article-card-image"
-                  src="images/property-villa.jpg"
-                  alt=""
-                  loading="lazy" />
-                <div class="article-card-content">
-                  <span class="eyebrow">Desain Hunian</span>
-                  <h3 id="orientasi-cahaya-udara">
-                    Mengenali arah cahaya dan aliran udara di rumah
-                  </h3>
-                  <p>
-                    Lihat bagaimana posisi bukaan memengaruhi kenyamanan dari
-                    pagi hingga sore.
-                  </p>
-                </div>
-              </a>
-            </article>
-
-            <article
-              class="article-card"
-              aria-labelledby="akses-transportasi-harian"
-              data-category="Lingkungan">
-              <a
-                class="article-card-link"
-                href="article-detail.html?slug=akses-transportasi-harian"
-                aria-labelledby="akses-transportasi-harian">
-                <img
-                  class="article-card-image"
-                  src="images/hero.jpg"
-                  alt=""
-                  loading="lazy" />
-                <div class="article-card-content">
-                  <span class="eyebrow">Lingkungan</span>
-                  <h3 id="akses-transportasi-harian">
-                    Menilai akses transportasi dari calon rumah
-                  </h3>
-                  <p>
-                    Coba perjalanan dari pintu rumah ke titik angkutan, termasuk
-                    bagian yang ditempuh dengan berjalan kaki.
-                  </p>
-                </div>
-              </a>
-            </article>
-          </div>
+          </template>
 
           <div class="article-empty" id="article-empty" hidden>
-            <h3>Artikel tidak ditemukan</h3>
-            <p>Coba kata kunci lain atau pilih kategori berbeda.</p>
-            <button class="btn btn-outline" type="button" id="article-reset">
+            <h3 data-cms-text="content.text5">Artikel tidak ditemukan</h3>
+            <p data-cms-text="content.text6">Coba kata kunci lain atau pilih kategori berbeda.</p>
+            <button class="btn btn-outline" type="button" id="article-reset" data-cms-text="content.text7">
               Reset pencarian
             </button>
           </div>
@@ -379,7 +196,7 @@
     <footer>
       <div class="container foot-grid">
         <div>
-          <img src="images/logo.svg" alt="Lumira Property" />
+          <img src="images/orva-logo.svg" alt="ORVA" />
           <p>
             Agensi properti terpercaya untuk hunian premium, investasi, dan
             pengembangan aset di kawasan strategis Indonesia.
@@ -419,7 +236,7 @@
         </div>
       </div>
       <div class="container copy">
-        &copy; 2026 Lumira Property. Seluruh hak cipta dilindungi.
+        &copy; 2026 ORVA. Seluruh hak cipta dilindungi.
       </div>
     </footer>
   </body>

@@ -1,4 +1,4 @@
-/* ===== LUMIRA PROPERTY ===== */
+/* ===== ORVA ===== */
 :root {
   --bg: #0a0f24;
   --bg-2: #0d1330;
@@ -342,7 +342,7 @@ select {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  background: #0d0c18 url("../images/hero.jpg") center top/cover no-repeat;
+  background: #0d0c18 var(--hero-photo, url("../images/hero.jpg")) center top/cover no-repeat;
   overflow: hidden;
 }
 .hero::before {
@@ -1644,6 +1644,43 @@ footer {
   width: 100%;
   aspect-ratio: 4 / 3;
   object-fit: cover;
+}
+.unit-thumbnails:not([hidden]) {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 10px;
+}
+.unit-thumbnails button {
+  padding: 2px;
+  border: 2px solid var(--line);
+  border-radius: 8px;
+  background: var(--card);
+  cursor: pointer;
+}
+.unit-thumbnails button[aria-pressed="true"] {
+  border-color: var(--gold);
+}
+.unit-thumbnails button:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+.unit-thumbnails img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: 4px;
+}
+.unit-video iframe {
+  display: block;
+  width: 100%;
+  min-height: 200px;
+  aspect-ratio: 16 / 9;
+  margin-top: 14px;
+  border: 0;
+  border-radius: 8px;
+  background: #000;
 }
 .unit-summary,
 .unit-description {
