@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1160" preserveAspectRatio="xMidYMid slice">
+<defs>
+<linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a2a52"/><stop offset=".45" stop-color="#9a4f55"/><stop offset=".7" stop-color="#e0893c"/><stop offset="1" stop-color="#f0b060"/></linearGradient>
+<linearGradient id="water" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a2b3d"/><stop offset="1" stop-color="#06060c"/></linearGradient>
+<linearGradient id="win" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd58a"/><stop offset="1" stop-color="#f0a040"/></linearGradient>
+</defs>
+<rect width="1920" height="760" fill="url(#sky)"/>
+<rect y="760" width="1920" height="400" fill="url(#water)"/>
+<g fill="#0a0a14"><rect x="0" y="120" width="1100" height="60"/><rect x="0" y="180" width="900" height="360"/><rect x="0" y="540" width="1000" height="220"/></g>
+<g fill="url(#win)" opacity=".9"><rect x="80" y="200" width="300" height="300"/><rect x="420" y="220" width="220" height="280"/><rect x="680" y="560" width="260" height="160"/><rect x="120" y="580" width="480" height="140"/></g>
+<g fill="#1c1426" opacity=".8"><rect x="1100" y="700" width="700" height="60"/></g>
+<g fill="#ffc070" opacity=".25"><rect x="80" y="800" width="300" height="300"/><rect x="420" y="800" width="220" height="260"/></g>
+<g fill="#0a0a14"><path d="M1740 150 q40 -80 100 -40 q-60 20 -60 100z"/><rect x="1790" y="180" width="10" height="580"/></g>
+</svg>

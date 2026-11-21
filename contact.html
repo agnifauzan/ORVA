@@ -1,0 +1,455 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Reservasi Konsultasi Properti — Lumira Property</title>
+    <meta
+      name="description"
+      content="Konsultasikan kebutuhan properti impian Anda bersama tim Private Client Advisor Lumira dengan standar kerahasiaan tertinggi." />
+    <link rel="icon" type="image/svg+xml" href="images/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:wght@400;500;600&display=swap"
+      rel="stylesheet" />
+    <script src="js/theme.js"></script>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/theme.css" />
+    <script src="js/main.js" defer></script>
+    <script src="js/contact.js" defer></script>
+  </head>
+  <body>
+    <!-- SVG SYMBOL SPRITE -->
+    <svg width="0" height="0" style="position: absolute" aria-hidden="true">
+      <defs>
+        <symbol id="i-arrow" viewBox="0 0 24 24">
+          <path d="M5 12h14M13 6l6 6-6 6" />
+        </symbol>
+        <symbol id="i-down" viewBox="0 0 24 24">
+          <path d="M6 9l6 6 6-6" />
+        </symbol>
+        <symbol id="i-menu" viewBox="0 0 24 24">
+          <path d="M4 7h16M4 12h16M4 17h16" />
+        </symbol>
+        <symbol id="i-id-card" viewBox="0 0 24 24">
+          <path d="M10 7H3v14h18V7h-7M10 3h4v7h-4zM6 17h4m6-4h2m-2 4h2" />
+          <circle cx="8" cy="13" r="1" />
+        </symbol>
+        <symbol id="i-mobile" viewBox="0 0 24 24">
+          <rect x="5" y="2" width="14" height="20" rx="2" />
+          <path d="M10 18h4" />
+        </symbol>
+        <symbol id="i-verified" viewBox="0 0 24 24">
+          <path
+            d="m12 3 3-1 2 3 3 1v4l2 2-2 2v4l-3 1-2 3-3-1-3 1-2-3-3-1v-4l-2-2 2-2V6l3-1 2-3z" />
+          <path d="m8 12 3 3 5-6" />
+        </symbol>
+        <symbol id="i-phone" viewBox="0 0 24 24">
+          <path
+            d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+        </symbol>
+        <symbol id="i-mail" viewBox="0 0 24 24">
+          <path
+            d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+          <polyline points="22,6 12,13 2,6" />
+        </symbol>
+        <symbol id="i-at" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="4" />
+          <path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-3.92 7.94" />
+        </symbol>
+        <symbol id="i-chat" viewBox="0 0 24 24">
+          <path d="M3 3h18v14H8l-5 4zM7 7h10M7 10h10m-10 3h7" />
+        </symbol>
+        <symbol id="i-ext-link" viewBox="0 0 24 24">
+          <path d="M7 17l10-10M17 7H7M17 7v10" />
+        </symbol>
+        <symbol id="i-shield-check" viewBox="0 0 24 24">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+          <polyline points="9 12 11 14 15 10" />
+        </symbol>
+      </defs>
+    </svg>
+
+    <!-- NAVBAR -->
+    <header class="nav" id="nav">
+      <div class="container">
+        <a href="index.html" class="logo"
+          ><img src="images/logo.svg" alt="Lumira Property"
+        /></a>
+        <nav class="nav-links" id="primary-menu" aria-label="Navigasi utama">
+          <div class="nav-item">
+            <a href="properties.html"
+              >Properties
+              <svg class="icon nav-chevron" aria-hidden="true">
+                <use href="#i-down" /></svg
+            ></a>
+            <div class="dropdown-menu">
+              <a href="properties.html?type=jual">Beli</a>
+              <a href="properties.html?type=sewa">Disewa</a>
+            </div>
+          </div>
+          <a href="about.html">About Us</a>
+          <a href="articles.html">Artikel</a>
+          <a href="contact.html" class="nav-mobile-only">Contact Us</a>
+        </nav>
+        <div class="nav-actions">
+          <div class="theme-toggle" role="group" aria-label="Tema tampilan" hidden>
+            <button type="button" data-theme-choice="light" aria-label="Mode terang" aria-pressed="false">
+              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="12" cy="12" r="4" />
+                <path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.4 1.4m11.2 11.2L19 19M5 19l1.4-1.4M17.6 6.4 19 5" />
+              </svg>
+            </button>
+            <button type="button" data-theme-choice="dark" aria-label="Mode gelap" aria-pressed="true">
+              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M21 13A9 9 0 0 1 11 3a9 9 0 1 0 10 10Z" />
+              </svg>
+            </button>
+          </div>
+          <a href="contact.html" class="nav-cta active"
+            >Contact Us
+            <span class="arrow-circle"
+              ><svg class="icon"><use href="#i-arrow" /></svg></span
+          ></a>
+          <button
+            class="burger"
+            id="burger"
+            type="button"
+            aria-label="Menu"
+            aria-expanded="false"
+            aria-controls="primary-menu">
+            <svg class="icon"><use href="#i-menu" /></svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <!-- CONTACT HERO -->
+      <section class="contact-hero">
+        <div class="container">
+          <span class="eyebrow">Contact Us</span>
+          <h1>
+            Konsultasikan Kebutuhan Properti
+            <span class="gold">Impian Anda</span>
+          </h1>
+          <p class="contact-lead">
+            Tim Private Client Advisor Lumira siap mendampingi akuisisi,
+            divestasi, serta kurasi portofolio residensial ultra-eksklusif di
+            kawasan prestisius Indonesia dengan protokol kerahasiaan tertinggi.
+          </p>
+        </div>
+      </section>
+
+      <!-- FORMULIR KONSULTASI -->
+      <section
+        class="contact-sec consultation"
+        id="konsultasi"
+        aria-labelledby="consultation-title">
+        <div class="container consultation-layout">
+          <div class="usp-image">
+            <img
+              src="images/about-villa.jpg"
+              alt=""
+              width="450"
+              height="360"
+              loading="lazy"
+              decoding="async" />
+          </div>
+          <div class="consultation-content">
+            <span class="eyebrow">Formulir</span>
+            <h2 id="consultation-title">
+              Reservasi <em>Konsultasi Pribadi</em>
+            </h2>
+            <div class="form-card">
+              <form
+                class="cform"
+                id="contact-form"
+                action="mailto:advisory@lumiraproperty.com"
+                method="post"
+                enctype="text/plain">
+                <!-- NAMA & WHATSAPP -->
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="c-name">Nama Lengkap *</label>
+                    <div class="input-wrap">
+                      <input
+                        type="text"
+                        id="c-name"
+                        name="name"
+                        autocomplete="name"
+                        placeholder="Contoh: Bpk. Raden Soedirja"
+                        required />
+                      <span class="input-icon">
+                        <svg class="icon" aria-hidden="true">
+                          <use href="#i-id-card" />
+                        </svg>
+                      </span>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="c-phone">Nomor WhatsApp / Seluler *</label>
+                    <div class="input-wrap">
+                      <input
+                        type="tel"
+                        id="c-phone"
+                        name="phone"
+                        autocomplete="tel"
+                        placeholder="+62 812 3456 7890"
+                        required />
+                      <span class="input-icon">
+                        <svg class="icon" aria-hidden="true">
+                          <use href="#i-mobile" />
+                        </svg>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- ALAMAT EMAIL -->
+                <div class="form-group">
+                  <label for="c-email">Alamat Email Resmi *</label>
+                  <div class="input-wrap">
+                    <input
+                      type="email"
+                      id="c-email"
+                      name="email"
+                      autocomplete="email"
+                      placeholder="nama@perusahaan.co.id atau alamat pribadi"
+                      required />
+                    <span class="input-icon">
+                      <svg class="icon"><use href="#i-mail" /></svg>
+                    </span>
+                  </div>
+                </div>
+
+                <!-- TUJUAN KONSULTASI -->
+                <fieldset class="purpose-field">
+                  <legend>Tujuan Konsultasi</legend>
+                  <div class="purpose-grid">
+                    <label class="purpose-option">
+                      <input
+                        type="radio"
+                        name="purpose"
+                        value="Beli Properti"
+                        checked />
+                      <span>Beli Properti</span>
+                    </label>
+                    <label class="purpose-option">
+                      <input
+                        type="radio"
+                        name="purpose"
+                        value="Jual Properti" />
+                      <span>Jual Properti</span>
+                    </label>
+                    <label class="purpose-option">
+                      <input type="radio" name="purpose" value="Sewa Mewah" />
+                      <span>Sewa Mewah</span>
+                    </label>
+                    <label class="purpose-option">
+                      <input type="radio" name="purpose" value="Portofolio" />
+                      <span>Portofolio</span>
+                    </label>
+                  </div>
+                </fieldset>
+
+                <div class="form-group">
+                  <label for="c-notes"
+                    >Kriteria Khusus atau Permintaan Tertentu</label
+                  >
+                  <div class="input-wrap">
+                    <textarea
+                      id="c-notes"
+                      name="notes"
+                      rows="4"
+                      placeholder="Sebutkan spesifikasi: luas tanah minimal, private pool, marina berth, skyline view, atau jadwal konsultasi yang diinginkan..."></textarea>
+                  </div>
+                </div>
+
+                <!-- SUBMIT BUTTON -->
+                <button type="submit" class="btn btn-gold btn-submit">
+                  Kirim Permintaan Konsultasi
+                  <svg class="icon" aria-hidden="true">
+                    <use href="#i-arrow" />
+                  </svg>
+                </button>
+
+                <p class="security-note" id="contact-status" role="status">
+                  Permintaan akan dibuka sebagai draf di aplikasi email Anda.
+                </p>
+
+                <!-- SECURITY DISCLAIMER -->
+                <div class="security-note">
+                  <svg class="icon"><use href="#i-shield-check" /></svg>
+                  <span>
+                    Data Anda dijamin kerahasiaannya di bawah standar
+                    Non-Disclosure Agreement Lumira Private Client.
+                  </span>
+                </div>
+              </form>
+              <noscript>
+                <a href="mailto:advisory@lumiraproperty.com"
+                  >Hubungi kami via email untuk reservasi konsultasi.</a
+                >
+              </noscript>
+            </div>
+          </div>
+
+          <div class="fast-track-card consultation-channels">
+            <div class="fast-track-head">
+              <div class="fast-track-badge">
+                <svg class="icon" aria-hidden="true">
+                  <use href="#i-verified" />
+                </svg>
+                <span>Direct Fast Track</span>
+              </div>
+              <div class="live-status">
+                <span class="status-dot"></span>
+                <span>Live Support</span>
+              </div>
+            </div>
+
+            <div class="contact-actions">
+              <!-- WHATSAPP -->
+              <a
+                href="https://wa.me/6281199288888"
+                class="contact-action-item"
+                target="_blank"
+                rel="noopener">
+                <div class="action-main">
+                  <div class="action-icon-box whatsapp">
+                    <svg class="icon"><use href="#i-chat" /></svg>
+                  </div>
+                  <div class="action-text">
+                    <span class="action-tag">WhatsApp Private Client</span>
+                    <span class="action-val"
+                      >+62 811&ndash;9928&ndash;8888</span
+                    >
+                    <span class="action-desc"
+                      >Koneksi langsung dengan Senior Partner</span
+                    >
+                  </div>
+                </div>
+                <div class="ext-arrow">
+                  <svg class="icon"><use href="#i-ext-link" /></svg>
+                </div>
+              </a>
+
+              <!-- EMAIL -->
+              <a
+                id="consultation-email" href="mailto:advisory@lumiraproperty.com"
+                class="contact-action-item">
+                <div class="action-main">
+                  <div class="action-icon-box email">
+                    <svg class="icon"><use href="#i-at" /></svg>
+                  </div>
+                  <div class="action-text">
+                    <span class="action-tag">Email Konsultasi Resmi</span>
+                    <span class="action-val"
+                      >advisory@lumiraproperty.com</span
+                    >
+                    <span class="action-desc"
+                      >Katalog portofolio PDF &amp; valuasi resmi</span
+                    >
+                  </div>
+                </div>
+                <div class="ext-arrow">
+                  <svg class="icon"><use href="#i-ext-link" /></svg>
+                </div>
+              </a>
+
+              <!-- TELEPON -->
+              <a href="tel:+622157908800" class="contact-action-item">
+                <div class="action-main">
+                  <div class="action-icon-box phone">
+                    <svg class="icon"><use href="#i-phone" /></svg>
+                  </div>
+                  <div class="action-text">
+                    <span class="action-tag"
+                      >Telepon Kantor Pusat (SCBD)</span
+                    >
+                    <span class="action-val">+62 21 5790 8800</span>
+                    <span class="action-desc"
+                      >Senin &ndash; Sabtu, 09.00 &ndash; 18.00 WIB</span
+                    >
+                  </div>
+                </div>
+                <div class="ext-arrow">
+                  <svg class="icon"><use href="#i-ext-link" /></svg>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- CTA / TITIP KRITERIA -->
+      <section class="cta prop-cta" id="titip">
+        <div class="container">
+          <div class="cta-box">
+            <div>
+              <span class="eyebrow">Belum menemukan yang cocok?</span>
+              <h2>Ceritakan kriteria Anda, agent<br />kami yang mencarikan.</h2>
+            </div>
+            <div class="cta-actions">
+              <a href="index.html#titip" class="btn btn-gold"
+                >Titip Kriteria <svg class="icon"><use href="#i-arrow" /></svg
+              ></a>
+              <a
+                href="https://wa.me/6281234567890"
+                class="btn btn-outline"
+                target="_blank"
+                rel="noopener"
+                >Chat WhatsApp</a
+              >
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="container foot-grid">
+        <div>
+          <img src="images/logo.svg" alt="Lumira Property" />
+          <p>
+            Agensi properti terpercaya untuk hunian premium, investasi, dan
+            pengembangan aset di kawasan strategis Indonesia.
+          </p>
+          <address>
+            Lumira Tower Lt. 18<br />Jl. Jend. Sudirman Kav. 21, Jakarta
+            Selatan<br />halo@lumiraproperty.id
+          </address>
+        </div>
+        <div>
+          <h5>Properti</h5>
+          <ul>
+            <li><a href="properties.html?status=jual#daftar-properti">Dijual</a></li>
+            <li><a href="properties.html?status=sewa#daftar-properti">Disewa</a></li>
+          </ul>
+        </div>
+        <div>
+          <h5>Layanan</h5>
+          <ul>
+            <li><a href="index.html#titip">Titip Jual / Sewa</a></li>
+            <li><a href="index.html#kpr">Simulasi KPR</a></li>
+            <li><a href="contact.html#konsultasi">Reservasi Konsultasi</a></li>
+          </ul>
+        </div>
+        <div>
+          <h5>Perusahaan</h5>
+          <ul>
+            <li><a href="about.html">Tentang Kami</a></li>
+            <li><a href="index.html#agent">Daftar Agent</a></li>
+            <li><a href="articles.html">Artikel &amp; Edukasi</a></li>
+            <li><a href="contact.html">Hubungi Kami</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="container copy">
+        &copy; 2026 Lumira Property. Seluruh hak cipta dilindungi.
+      </div>
+    </footer>
+  </body>
+</html>

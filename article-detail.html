@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Detail Artikel — Lumira Property</title>
+    <meta
+      name="description"
+      content="Panduan perumahan dari Lumira Property, mulai dari survei rumah dan KPR hingga desain hunian dan pilihan lingkungan." />
+    <link rel="icon" type="image/svg+xml" href="images/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:wght@400;500;600&display=swap"
+      rel="stylesheet" />
+    <script src="js/theme.js"></script>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/theme.css" />
+    <script src="js/main.js" defer></script>
+    <script src="js/article-content.js" defer></script>
+    <script src="js/article-detail.js" defer></script>
+  </head>
+  <body>
+    <!-- SVG SYMBOL SPRITE -->
+    <svg width="0" height="0" style="position: absolute" aria-hidden="true">
+      <defs>
+        <symbol id="i-arrow" viewBox="0 0 24 24">
+          <path d="M5 12h14M13 6l6 6-6 6" />
+        </symbol>
+        <symbol id="i-down" viewBox="0 0 24 24">
+          <path d="M6 9l6 6 6-6" />
+        </symbol>
+        <symbol id="i-menu" viewBox="0 0 24 24">
+          <path d="M4 7h16M4 12h16M4 17h16" />
+        </symbol>
+      </defs>
+    </svg>
+
+    <!-- NAVBAR -->
+    <header class="nav" id="nav">
+      <div class="container">
+        <a href="index.html" class="logo"
+          ><img src="images/logo.svg" alt="Lumira Property"
+        /></a>
+        <nav class="nav-links" id="primary-menu" aria-label="Navigasi utama">
+          <div class="nav-item">
+            <a href="properties.html"
+              >Properties
+              <svg class="icon nav-chevron" aria-hidden="true">
+                <use href="#i-down" /></svg
+            ></a>
+            <div class="dropdown-menu">
+              <a href="properties.html?type=jual">Beli</a>
+              <a href="properties.html?type=sewa">Disewa</a>
+            </div>
+          </div>
+          <a href="about.html">About Us</a>
+          <a href="articles.html" aria-current="location">Artikel</a>
+          <a href="contact.html" class="nav-mobile-only">Contact Us</a>
+        </nav>
+        <div class="nav-actions">
+          <div class="theme-toggle" role="group" aria-label="Tema tampilan" hidden>
+            <button type="button" data-theme-choice="light" aria-label="Mode terang" aria-pressed="false">
+              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="12" cy="12" r="4" />
+                <path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.4 1.4m11.2 11.2L19 19M5 19l1.4-1.4M17.6 6.4 19 5" />
+              </svg>
+            </button>
+            <button type="button" data-theme-choice="dark" aria-label="Mode gelap" aria-pressed="true">
+              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M21 13A9 9 0 0 1 11 3a9 9 0 1 0 10 10Z" />
+              </svg>
+            </button>
+          </div>
+          <a href="contact.html" class="nav-cta"
+            >Contact Us
+            <span class="arrow-circle"
+              ><svg class="icon"><use href="#i-arrow" /></svg></span
+          ></a>
+          <button
+            class="burger"
+            id="burger"
+            type="button"
+            aria-label="Menu"
+            aria-expanded="false"
+            aria-controls="primary-menu">
+            <svg class="icon"><use href="#i-menu" /></svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main class="article-detail">
+      <div class="container article-detail-wrap">
+        <nav class="article-crumb" aria-label="Breadcrumb">
+          <ol>
+            <li><a href="index.html">Beranda</a></li>
+            <li><a href="articles.html">Artikel</a></li>
+            <li aria-current="page">Detail artikel</li>
+          </ol>
+        </nav>
+        <p class="article-detail-message" id="article-message">
+          Pilih artikel dari <a href="articles.html">daftar artikel</a>.
+        </p>
+        <article id="article-detail" hidden>
+          <header class="article-detail-header">
+            <a class="article-back" href="articles.html">Kembali ke artikel</a>
+            <h1 id="detail-title"></h1>
+            <div class="article-meta">
+              <span class="article-topic" id="detail-category"></span>
+              <span>Lumira Property</span>
+              <span id="detail-reading-time"></span>
+            </div>
+          </header>
+          <img class="article-cover" id="detail-image" alt="" />
+          <div class="article-reading">
+            <p class="article-intro" id="detail-intro"></p>
+            <aside class="article-contents">
+              <nav aria-labelledby="article-contents-title">
+                <h2 id="article-contents-title">Daftar isi</h2>
+                <ol id="detail-contents"></ol>
+              </nav>
+            </aside>
+            <div class="article-prose" id="detail-body"></div>
+          </div>
+        </article>
+      </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="container foot-grid">
+        <div>
+          <img src="images/logo.svg" alt="Lumira Property" />
+          <p>
+            Agensi properti terpercaya untuk hunian premium, investasi, dan
+            pengembangan aset di kawasan strategis Indonesia.
+          </p>
+          <address>
+            Lumira Tower Lt. 18<br />Jl. Jend. Sudirman Kav. 21, Jakarta
+            Selatan<br />halo@lumiraproperty.id
+          </address>
+        </div>
+        <div>
+          <h5>Properti</h5>
+          <ul>
+            <li><a href="properties.html?status=jual#daftar-properti">Dijual</a></li>
+            <li><a href="properties.html?status=sewa#daftar-properti">Disewa</a></li>
+          </ul>
+        </div>
+        <div>
+          <h5>Layanan</h5>
+          <ul>
+            <li><a href="index.html#titip">Titip Jual / Sewa</a></li>
+            <li><a href="index.html#kpr">Simulasi KPR</a></li>
+            <li><a href="contact.html#konsultasi">Reservasi Konsultasi</a></li>
+          </ul>
+        </div>
+        <div>
+          <h5>Perusahaan</h5>
+          <ul>
+            <li><a href="about.html">Tentang Kami</a></li>
+            <li><a href="index.html#agent">Daftar Agent</a></li>
+            <li><a href="articles.html">Artikel &amp; Edukasi</a></li>
+            <li><a href="contact.html">Hubungi Kami</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="container copy">
+        &copy; 2026 Lumira Property. Seluruh hak cipta dilindungi.
+      </div>
+    </footer>
+  </body>
+</html>
