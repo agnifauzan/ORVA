@@ -181,11 +181,16 @@ const siteContent = (() => {
 
   const ready = Promise.allSettled([
     cmsApi.read("globals/pengaturan-situs", { depth: "1" }).then(applySite),
-    cmsApi.read(`globals/${document.body.dataset.cmsPage}`, { depth: "1" }).then(applyPage),
+    cmsApi.read(`globals/${document.body.dataset.cmsPage}`, { depth: "1" }).then((data) => {
+      applyPage(data);
+      return data;
+    }),
   ]).then((results) => {
     for (const result of results) {
       if (result.status === "rejected") console.error("Gagal memuat isi halaman ORVA:", result.reason);
     }
+    const page = results[1];
+    return page.status === "fulfilled" ? page.value : null;
   });
 
   return { ready, text, link, image };

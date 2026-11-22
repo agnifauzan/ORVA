@@ -6,7 +6,7 @@
   const type = form.querySelector("#tipe");
   const price = form.querySelector("#harga");
   const catalog = document.getElementById("daftar-properti");
-  const [result] = await Promise.allSettled([
+  const [result, pageContent] = await Promise.allSettled([
     propertyApi.listUnits(catalog ? { sort: "-createdAt" } : undefined),
     siteContent.ready,
   ]);
@@ -123,7 +123,9 @@
   const homepageCardTemplate = document.getElementById("homepage-property-template");
   if (homepageCardTemplate) {
     const template = homepageCardTemplate.content.firstElementChild;
-    homepageGrid.replaceChildren(...units.map((unit) => createPropertyCard(unit, template)));
+    const configuredLimit = pageContent.value?.content?.propertyLimit;
+    const limit = Number.isSafeInteger(configuredLimit) && configuredLimit > 0 ? configuredLimit : 8;
+    homepageGrid.replaceChildren(...units.slice(0, limit).map((unit) => createPropertyCard(unit, template)));
   }
 
   function createFilterDropdown(select) {

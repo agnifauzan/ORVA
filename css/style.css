@@ -342,7 +342,8 @@ select {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  background: #0d0c18 var(--hero-photo, url("../images/hero.jpg")) center top/cover no-repeat;
+  background: #0d0c18 var(--hero-photo, url("../images/hero.jpg")) center
+    top/cover no-repeat;
   overflow: hidden;
 }
 .hero::before {
@@ -380,7 +381,8 @@ select {
   flex: 1;
 }
 .hero-copy {
-  max-width: 620px;
+  width: 100%;
+  max-width: 750px;
 }
 .hero-copy .eyebrow {
   margin-bottom: 26px;
@@ -2738,6 +2740,11 @@ footer {
     align-items: stretch;
     gap: 8px;
     padding: 16px;
+  }
+  [data-property-search] :is(.field-control, .filter-trigger)::after {
+    width: 7px;
+    height: 7px;
+    border-width: 1px;
   }
   .field,
   .field:first-of-type {
