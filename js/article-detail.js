@@ -1,4 +1,5 @@
 (async () => {
+  const { message: localMessage, text } = orvaLanguage;
   const slug = new URLSearchParams(location.search).get("slug");
   const message = document.getElementById("article-message");
 
@@ -7,23 +8,30 @@
     [article] = await Promise.all([cmsApi.bySlug("articles", slug), siteContent.ready]);
   } catch (error) {
     console.error("Gagal memuat detail artikel:", error);
-    message.prepend("Artikel belum bisa dimuat. ");
+    message.prepend(text("Artikel belum bisa dimuat.") + " ");
     return;
   }
   if (!article) {
-    if (slug) message.prepend("Artikel tidak ditemukan. ");
+    if (slug) message.prepend(text("Artikel tidak ditemukan.") + " ");
     return;
   }
 
-  const { title, category, coverImage, intro, sections = [] } = article;
-  const words = [intro, ...sections.map(({ heading, body }) => `${heading} ${body}`)]
+  const { category, coverImage } = article;
+  const title = text(article.title);
+  const intro = text(article.intro);
+  const sections = (article.sections ?? []).map(({ heading, body }) => ({
+    heading: text(heading),
+    paragraphs: body.split(/\r?\n\s*\r?\n/).map(text),
+  }));
+  const words = [intro, ...sections.flatMap(({ heading, paragraphs }) => [heading, ...paragraphs])]
     .join(" ").split(/\s+/).length;
+  const minutes = Math.ceil(words / 200);
 
   document.title = `${title} — ${document.querySelector(".logo img").alt}`;
   document.querySelector('meta[name="description"]').content = intro;
   document.getElementById("detail-title").textContent = title;
-  document.getElementById("detail-category").textContent = category;
-  document.getElementById("detail-reading-time").textContent = `${Math.ceil(words / 200)} menit baca`;
+  document.getElementById("detail-category").textContent = text(category);
+  document.getElementById("detail-reading-time").textContent = localMessage(`${minutes} menit baca`, `${minutes} min read`);
   const image = document.getElementById("detail-image");
   const cover = cmsApi.media(coverImage);
   if (cover) {
@@ -37,7 +45,7 @@
   const contents = document.getElementById("detail-contents");
   const prose = document.getElementById("detail-body");
 
-  sections.forEach(({ heading, body }, index) => {
+  sections.forEach(({ heading, paragraphs }, index) => {
     const id = `bagian-${index + 1}`;
     const link = document.createElement("a");
     link.href = `#${id}`;
@@ -51,7 +59,7 @@
     subtitle.id = id;
     subtitle.textContent = heading;
     section.append(subtitle);
-    for (const line of body.split(/\r?\n\s*\r?\n/)) {
+    for (const line of paragraphs) {
       const paragraph = document.createElement("p");
       paragraph.textContent = line;
       section.append(paragraph);

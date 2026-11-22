@@ -1,4 +1,5 @@
 (async () => {
+  const { locale, message, text } = orvaLanguage;
   const form = document.querySelector(".article-tools");
   const query = document.getElementById("article-query");
   const category = document.getElementById("article-category");
@@ -12,14 +13,14 @@
   try {
     const [items] = await Promise.all([cmsApi.list("articles"), siteContent.ready]);
     const categories = [...new Set(items.map((article) => article.category))]
-      .sort((a, b) => a.localeCompare(b, "id-ID"));
-    category.replaceChildren(category.options[0], ...categories.map((name) => new Option(name)));
+      .sort((a, b) => text(a).localeCompare(text(b), locale));
+    category.replaceChildren(category.options[0], ...categories.map((name) => new Option(text(name), name)));
 
     articles = items.map((article, index) => {
       const card = template.content.firstElementChild.cloneNode(true);
       const title = card.querySelector("h3");
       title.id = `artikel-${index + 1}`;
-      title.textContent = article.title;
+      title.textContent = text(article.title);
       card.setAttribute("aria-labelledby", title.id);
       const link = card.querySelector("a");
       link.href = `article-detail.html?slug=${encodeURIComponent(article.slug)}`;
@@ -27,26 +28,29 @@
       const image = card.querySelector("img");
       if (article.coverImage) siteContent.image(image, article.coverImage);
       else image.remove();
-      card.querySelector(".eyebrow").textContent = article.category;
-      card.querySelector("p").textContent = article.intro;
+      card.querySelector(".eyebrow").textContent = text(article.category);
+      card.querySelector("p").textContent = text(article.intro);
 
+      const searchable = [article.title, article.category, article.intro];
+      for (const { heading, body } of article.sections ?? []) {
+        searchable.push(heading, ...body.split(/\r?\n\s*\r?\n/));
+      }
       return {
         card,
         category: article.category,
-        text: [article.title, article.category, article.intro, ...(article.sections ?? []).map(({ heading, body }) => `${heading} ${body}`)]
-          .join(" ").toLocaleLowerCase("id-ID"),
+        text: [...searchable, ...searchable.map(text)].join(" ").toLocaleLowerCase(locale),
       };
     });
 
     list.replaceChildren(...articles.map(({ card }) => card));
   } catch (error) {
     console.error("Gagal memuat artikel:", error);
-    count.textContent = "Artikel belum bisa dimuat.";
+    count.textContent = text("Artikel belum bisa dimuat.");
     return;
   }
 
   function filterArticles() {
-    const terms = query.value.trim().toLocaleLowerCase("id-ID").split(/\s+/).filter(Boolean);
+    const terms = query.value.trim().toLocaleLowerCase(locale).split(/\s+/).filter(Boolean);
     let matches = 0;
     for (const article of articles) {
       const matchesCategory = !category.value || category.value === article.category;
@@ -54,7 +58,10 @@
       article.card.hidden = !visible;
       if (visible) matches += 1;
     }
-    count.textContent = `${matches} artikel ditampilkan`;
+    count.textContent = message(
+      `${matches} artikel ditampilkan`,
+      `${matches} ${matches === 1 ? "article" : "articles"} shown`,
+    );
     empty.hidden = matches > 0;
   }
 

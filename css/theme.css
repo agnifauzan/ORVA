@@ -3,7 +3,9 @@
 }
 
 .nav-actions,
-.theme-toggle {
+.nav-switches,
+.theme-toggle,
+.language-toggle {
   display: flex;
   align-items: center;
 }
@@ -12,7 +14,11 @@
   gap: clamp(12px, 2.4vw, 35px);
 }
 
-.theme-toggle {
+.nav-switches {
+  gap: 8px;
+}
+
+:is(.theme-toggle, .language-toggle) {
   --toggle-bg: #201e2e;
   --toggle-active: #38374f;
   --toggle-text: #b5b2c5;
@@ -26,7 +32,7 @@
   display: none;
 }
 
-.theme-toggle button {
+:is(.theme-toggle, .language-toggle) button {
   display: grid;
   place-items: center;
   width: 30px;
@@ -38,18 +44,25 @@
   cursor: pointer;
 }
 
-.theme-toggle button[aria-pressed="true"] {
+:is(.theme-toggle, .language-toggle) button[aria-pressed="true"] {
   background: var(--toggle-active);
   color: var(--text);
 }
 
-.theme-toggle button:hover {
+:is(.theme-toggle, .language-toggle) button:hover {
   color: var(--text);
 }
 
-.theme-toggle button:focus-visible {
+:is(.theme-toggle, .language-toggle) button:focus-visible {
   outline: 2px solid var(--gold);
   outline-offset: 2px;
+}
+
+.language-toggle button {
+  width: auto;
+  min-width: 28px;
+  padding-inline: 6px;
+  font: 700 0.6875rem var(--font-body);
 }
 
 .theme-toggle .icon {
@@ -59,7 +72,12 @@
 
 @media (max-width: 1024px) {
   .nav-actions {
-    gap: 8px;
+    gap: 6px;
+  }
+
+  .nav-links :is(.theme-toggle, .language-toggle) button {
+    min-width: 44px;
+    height: 44px;
   }
 
   .burger .icon {
@@ -85,14 +103,14 @@
   --light-shadow: 0 12px 32px rgba(50, 36, 56, 0.09);
 }
 
-[data-theme="light"] .theme-toggle {
+[data-theme="light"] :is(.theme-toggle, .language-toggle) {
   --toggle-bg: var(--bg);
   --toggle-active: var(--bg);
   --toggle-text: #62536b;
   box-shadow: inset 0 0 0 1px var(--line);
 }
 
-[data-theme="light"] .theme-toggle button[aria-pressed="true"] {
+[data-theme="light"] :is(.theme-toggle, .language-toggle) button[aria-pressed="true"] {
   color: var(--gold);
   box-shadow: inset 0 0 0 1px var(--gold);
 }
@@ -106,7 +124,8 @@
   box-shadow: var(--light-shadow);
 }
 
-[data-theme="light"] :is(.logo img, .foot-grid img[src="images/orva-logo.svg"], .site-logo) {
+[data-theme="light"]
+  :is(.logo img, .foot-grid img[src="images/orva-logo.svg"], .site-logo) {
   content: var(--site-light-logo, url("../images/orva-logo-light.svg")) / "ORVA";
 }
 
@@ -118,8 +137,7 @@
   :is(
     .nav-links a:hover,
     .nav-links a[aria-current="page"],
-    .nav-item.active > a,
-    .nav-links .nav-mobile-only
+    .nav-item.active > a
   ) {
   color: var(--gold);
 }
@@ -357,9 +375,9 @@
 }
 
 [data-theme="light"] [data-property-search] .tab {
-  border-color: #ffffff60;
+  border-color: #52525260;
   background: #ffffff00;
-  color: #d0d5e1;
+  color: #282828;
 }
 
 [data-theme="light"] [data-property-search] .tab.active {
@@ -392,7 +410,13 @@
 }
 
 [data-theme="light"]
-  :is(.sort-select, .sort-select option, .article-field input, .view-toggles, .cfield input) {
+  :is(
+    .sort-select,
+    .sort-select option,
+    .article-field input,
+    .view-toggles,
+    .cfield input
+  ) {
   background: var(--card);
   border-color: var(--line);
 }
@@ -473,9 +497,9 @@
 }
 
 @media (max-width: 1024px) {
-  [data-theme="light"] .nav.open .nav-links {
+  [data-theme="light"] .nav.open,
+  [data-theme="light"] .nav-links {
     background: #fff;
-    box-shadow: var(--light-shadow);
   }
 
   [data-theme="light"] .nav-item .dropdown-menu {

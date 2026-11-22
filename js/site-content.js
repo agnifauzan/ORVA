@@ -3,6 +3,7 @@ const siteContent = (() => {
 
   function text(element, value) {
     if (!element || typeof value !== "string") return;
+    value = orvaLanguage.text(value);
     const nodes = [...element.childNodes].filter(
       (node) => node.nodeType === Node.TEXT_NODE && node.textContent.trim(),
     );
@@ -16,9 +17,9 @@ const siteContent = (() => {
 
   function formatted(element, value, emphasis = "em") {
     element.replaceChildren();
-    value.split("\n").forEach((line, index) => {
+    orvaLanguage.text(value).split("\n").forEach((line, index) => {
       if (index) element.append(document.createElement("br"));
-      line.split(/(\*\*[^*]+\*\*)/g).forEach((part) => {
+      orvaLanguage.text(line).split(/(\*\*[^*]+\*\*)/g).forEach((part) => {
         if (!part.startsWith("**") || !part.endsWith("**")) {
           element.append(part);
           return;
@@ -65,13 +66,13 @@ const siteContent = (() => {
       if (url) element.action = url;
     },
     placeholder(element, value) {
-      if (typeof value === "string") element.placeholder = value;
+      if (typeof value === "string") element.placeholder = orvaLanguage.text(value);
     },
     value(element, value) {
-      if (typeof value === "string") element.defaultValue = value;
+      if (typeof value === "string") element.defaultValue = orvaLanguage.text(value);
     },
     content(element, value) {
-      if (typeof value === "string") element.content = value;
+      if (typeof value === "string") element.content = orvaLanguage.text(value);
     },
     image,
     background(element, value) {
@@ -129,12 +130,10 @@ const siteContent = (() => {
         group.append(anchor, dropdown);
         return group;
       });
-      if (header.contact?.href) {
-        const button = makeLink(header.contact);
-        button.className = "nav-mobile-only";
-        items.push(button);
+      for (const child of menu.querySelectorAll(":scope > :not(.nav-switches)")) {
+        child.remove();
       }
-      menu.replaceChildren(...items);
+      menu.prepend(...items);
     }
     link(document.querySelector(".nav-cta"), header.contact);
   }
@@ -148,7 +147,7 @@ const siteContent = (() => {
       const columns = footer.columns.map((column) => {
         const section = document.createElement("div");
         const title = document.createElement("h5");
-        title.textContent = column.title;
+        title.textContent = orvaLanguage.text(column.title);
         const links = document.createElement("ul");
         for (const item of column.links ?? []) {
           const li = document.createElement("li");
@@ -179,18 +178,20 @@ const siteContent = (() => {
     if (data.footer) applyFooter(data.footer);
   }
 
-  const ready = Promise.allSettled([
-    cmsApi.read("globals/pengaturan-situs", { depth: "1" }).then(applySite),
-    cmsApi.read(`globals/${document.body.dataset.cmsPage}`, { depth: "1" }).then((data) => {
+  const requests = [cmsApi.read("globals/pengaturan-situs", { depth: "1" }).then(applySite)];
+  const pageSlug = document.body.dataset.cmsPage;
+  if (pageSlug) {
+    requests.push(cmsApi.read(`globals/${pageSlug}`, { depth: "1" }).then((data) => {
       applyPage(data);
       return data;
-    }),
-  ]).then((results) => {
+    }));
+  }
+  const ready = Promise.allSettled(requests).then((results) => {
     for (const result of results) {
       if (result.status === "rejected") console.error("Gagal memuat isi halaman ORVA:", result.reason);
     }
     const page = results[1];
-    return page.status === "fulfilled" ? page.value : null;
+    return page?.status === "fulfilled" ? page.value : null;
   });
 
   return { ready, text, link, image };

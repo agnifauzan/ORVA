@@ -2,10 +2,35 @@
 const nav = document.getElementById("nav");
 const menuButton = document.getElementById("burger");
 const primaryMenu = document.getElementById("primary-menu");
+const navActions = menuButton.closest(".nav-actions");
+const navSwitches = navActions.querySelector(".nav-switches");
+const mobileNav = window.matchMedia("(max-width: 1024px)");
+const background = document.querySelectorAll("main, footer");
+const menuLabel = menuButton.getAttribute("aria-label");
 
 function setMenuOpen(open) {
+  if (Boolean(history.state?.orvaMobileMenuOpen) !== open) {
+    history.replaceState({ ...history.state, orvaMobileMenuOpen: open }, "");
+  }
   nav.classList.toggle("open", open);
+  document.documentElement.classList.toggle("mobile-menu-open", open);
   menuButton.setAttribute("aria-expanded", String(open));
+  menuButton.setAttribute(
+    "aria-label",
+    open ? orvaLanguage.message("Tutup menu", "Close menu") : menuLabel,
+  );
+  primaryMenu.inert = mobileNav.matches && !open;
+  for (const section of background) section.inert = open;
+  if (open) {
+    primaryMenu.scrollTop = 0;
+    const animations = primaryMenu.getAnimations?.() ?? [];
+    Promise.allSettled(animations.map((animation) => animation.finished)).then(() => {
+      const focus = document.activeElement;
+      if (nav.classList.contains("open") && (focus === menuButton || focus === document.body)) {
+        primaryMenu.querySelector("a")?.focus({ preventScroll: true });
+      }
+    });
+  }
 }
 
 menuButton.addEventListener("click", () => {
@@ -16,6 +41,10 @@ primaryMenu.addEventListener("click", (event) => {
   if (event.target.closest("a")) setMenuOpen(false);
 });
 
+navActions.querySelector(".nav-cta").addEventListener("click", () => {
+  if (nav.classList.contains("open")) setMenuOpen(false);
+});
+
 document.addEventListener("keydown", (event) => {
   if (event.key === "Escape" && nav.classList.contains("open")) {
     setMenuOpen(false);
@@ -23,9 +52,19 @@ document.addEventListener("keydown", (event) => {
   }
 });
 
-window.matchMedia("(max-width: 1024px)").addEventListener("change", () => {
-  setMenuOpen(false);
-});
+function syncNavigation() {
+  if (navSwitches) {
+    if (mobileNav.matches) {
+      primaryMenu.append(navSwitches);
+    } else {
+      navActions.prepend(navSwitches);
+    }
+  }
+  setMenuOpen(mobileNav.matches && Boolean(history.state?.orvaMobileMenuOpen));
+}
+
+mobileNav.addEventListener("change", syncNavigation);
+syncNavigation();
 
 function updateNavPosition() {
   nav.classList.toggle("scrolled", window.scrollY > 30);

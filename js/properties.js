@@ -1,4 +1,5 @@
 (async () => {
+  const { locale, message, place, text } = orvaLanguage;
   const search = document.querySelector("[data-property-search]");
   const form = search.querySelector("form");
   const tabs = [...search.querySelectorAll("[data-status]")];
@@ -15,7 +16,7 @@
   const units = loadFailed ? [] : result.value;
   if (loadFailed) {
     console.error("Gagal memuat properti:", result.reason);
-    loading.textContent = "Daftar properti belum bisa dimuat. Coba muat ulang halaman.";
+    loading.textContent = text("Daftar properti belum bisa dimuat. Coba muat ulang halaman.");
   } else {
     loading.hidden = true;
   }
@@ -24,8 +25,8 @@
   const existingRegions = new Set([...region.options].map((option) => option.value));
   const additions = [...new Set(units.map(regionOf).filter(Boolean))]
     .filter((value) => !existingRegions.has(value))
-    .sort((a, b) => a.localeCompare(b, "id-ID"));
-  region.append(...additions.map((value) => new Option(value)));
+    .sort((a, b) => place(a).localeCompare(place(b), locale));
+  region.append(...additions.map((value) => new Option(place(value), value)));
 
   const statusField = form.elements.namedItem("status");
   const params = new URLSearchParams(window.location.search);
@@ -36,14 +37,14 @@
       .status || "jual";
 
   const saleRanges = [
-    ["< Rp 1 M", 0, 999_999_999],
-    ["Rp 1 M – Rp 5 M", 1_000_000_000, 5_000_000_000],
-    ["> Rp 5 M", 5_000_000_001, Infinity],
+    [message("< Rp 1 M", "< Rp 1B"), 0, 999_999_999],
+    [message("Rp 1 M – Rp 5 M", "Rp 1B – Rp 5B"), 1_000_000_000, 5_000_000_000],
+    [message("> Rp 5 M", "> Rp 5B"), 5_000_000_001, Infinity],
   ];
   const rentRanges = [
-    ["< Rp 25 Jt / bulan", 0, 24_999_999],
-    ["Rp 25 Jt – Rp 50 Jt / bulan", 25_000_000, 50_000_000],
-    ["> Rp 50 Jt / bulan", 50_000_001, Infinity],
+    [message("< Rp 25 Jt / bulan", "< Rp 25M / month"), 0, 24_999_999],
+    [message("Rp 25 Jt – Rp 50 Jt / bulan", "Rp 25M – Rp 50M / month"), 25_000_000, 50_000_000],
+    [message("> Rp 50 Jt / bulan", "> Rp 50M / month"), 50_000_001, Infinity],
   ];
   let ranges;
 
@@ -70,7 +71,7 @@
     const isRent = status === "sewa";
     ranges = isRent ? rentRanges : saleRanges;
     price.replaceChildren(
-      new Option(isRent ? "Semua Harga Sewa" : "Semua Harga", ""),
+      new Option(text(isRent ? "Semua Harga Sewa" : "Semua Harga"), ""),
       ...ranges.map(([label], index) => new Option(label, String(index))),
     );
     price.dispatchEvent(new Event("change"));
@@ -149,21 +150,22 @@
     panel.innerHTML = `
       <h3 class="filter-title" id="${panelId}-title"></h3>
       <div class="filter-query">
-        <input type="search" placeholder="Search" />
+        <input type="search" placeholder="Cari" />
         <svg class="icon" aria-hidden="true"><use href="#i-search"></use></svg>
       </div>
       <div class="filter-options"></div>
       <p class="filter-empty" role="status" hidden>Opsi tidak ditemukan.</p>
       <div class="filter-actions">
-        <button type="button" class="filter-reset">Reset</button>
-        <button type="button" class="filter-apply">Apply</button>
+        <button type="button" class="filter-reset">Atur ulang</button>
+        <button type="button" class="filter-apply">Terapkan</button>
       </div>`;
 
+    orvaLanguage.translateTree(panel);
     const query = panel.querySelector("input");
     const list = panel.querySelector(".filter-options");
     const empty = panel.querySelector(".filter-empty");
     panel.querySelector(".filter-title").textContent = title;
-    query.setAttribute("aria-label", `Cari ${title.toLowerCase()}`);
+    query.setAttribute("aria-label", `${text("Cari")} ${title.toLocaleLowerCase(locale)}`);
     label.htmlFor = trigger.id;
     select.hidden = true;
     select.after(trigger, panel);
@@ -174,7 +176,7 @@
       );
       const summary =
         options.length > 1
-          ? `${options.length} dipilih`
+          ? message(`${options.length} dipilih`, `${options.length} selected`)
           : options[0]?.text || select.options[0].text;
       trigger.textContent = summary;
       trigger.setAttribute("aria-label", `${title}: ${summary}`);
@@ -201,10 +203,10 @@
     }
 
     function filterOptions() {
-      const term = query.value.trim().toLocaleLowerCase("id");
+      const term = query.value.trim().toLocaleLowerCase(locale);
       let hasMatch = false;
       for (const row of list.children) {
-        row.hidden = !row.textContent.toLocaleLowerCase("id").includes(term);
+        row.hidden = !row.textContent.toLocaleLowerCase(locale).includes(term);
         hasMatch ||= !row.hidden;
       }
       list.hidden = !hasMatch;
@@ -277,27 +279,25 @@
     const location = card.querySelector(".loc");
     const favorite = card.querySelector(".heart");
 
-    card.dataset.status = unit.status === "Disewa" ? "sewa" : "jual";
+    card.dataset.status = unit.transaction;
     card.dataset.region = regionOf(unit);
-    card.dataset.propertyType = unit.type?.toLowerCase() || "";
+    card.dataset.propertyType = unit.propertyType || "";
     card.dataset.price = String(unit.rawPrice);
     card.dataset.area = String(unit.area ?? 0);
 
     title.textContent = unit.name;
     title.href = `property-detail.html?unit=${encodeURIComponent(unit.slug)}`;
     photo.src = unit.photo || "images/property-1.svg";
-    photo.alt = unit.alt || `Foto ${unit.name}`;
+    photo.alt = unit.alt || message(`Foto ${unit.name}`, `Photo of ${unit.name}`);
 
     location.querySelector(".property-card-location").textContent =
-      unit.location || "Lokasi belum diisi";
+      place(unit.location) || text("Lokasi belum diisi");
     card.querySelector(".badge").textContent = unit.status;
     card.querySelector(".price").textContent = unit.price;
 
     const [bedrooms, bathrooms, area] = card.querySelectorAll(".mini span");
-    bedrooms.textContent =
-      unit.bedrooms == null ? "— KT" : `${unit.bedrooms} KT`;
-    bathrooms.textContent =
-      unit.bathrooms == null ? "— KM" : `${unit.bathrooms} KM`;
+    bedrooms.textContent = `${unit.bedrooms ?? "—"} ${message("KT", unit.bedrooms === 1 ? "bed" : "beds")}`;
+    bathrooms.textContent = `${unit.bathrooms ?? "—"} ${message("KM", unit.bathrooms === 1 ? "bath" : "baths")}`;
     area.textContent = unit.area == null ? "— m²" : `${unit.area} m²`;
 
     favorite.classList.remove("on");
@@ -358,7 +358,10 @@
         card.hidden = !visibleCards.has(card);
       }
 
-      count.textContent = loadFailed ? "—" : `${matches.length} properti`;
+      count.textContent = loadFailed ? "—" : message(
+        `${matches.length} properti`,
+        `${matches.length} ${matches.length === 1 ? "property" : "properties"}`,
+      );
       empty.hidden = loadFailed || matches.length > 0;
       renderPagination(pageCount);
     }
@@ -382,17 +385,17 @@
 
       const firstPage = Math.max(1, Math.min(page - 2, pageCount - 4));
       const lastPage = Math.min(firstPage + 4, pageCount);
-      const buttons = [pageButton("Sebelumnya", page - 1, page === 1)];
+      const buttons = [pageButton(text("Sebelumnya"), page - 1, page === 1)];
       for (let number = firstPage; number <= lastPage; number += 1) {
         const button = pageButton(String(number), number);
-        button.setAttribute("aria-label", `Halaman ${number}`);
+        button.setAttribute("aria-label", message(`Halaman ${number}`, `Page ${number}`));
         if (number === page) {
           button.setAttribute("aria-current", "page");
           button.classList.replace("btn-outline", "btn-gold");
         }
         buttons.push(button);
       }
-      buttons.push(pageButton("Berikutnya", page + 1, page === pageCount));
+      buttons.push(pageButton(text("Berikutnya"), page + 1, page === pageCount));
       pagination.replaceChildren(...buttons);
     }
 

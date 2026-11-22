@@ -15,16 +15,29 @@ const cmsApi = (() => {
     }
   }
 
-  async function read(path, parameters) {
+  async function request(path, parameters, options) {
     const url = new URL(`/api/${path}`, base);
     if (parameters) url.search = new URLSearchParams(parameters);
     const response = await fetch(url, {
       cache: "no-store",
       credentials: "omit",
       signal: AbortSignal.timeout(8000),
+      ...options,
     });
     if (!response.ok) throw new Error(`CMS: ${path} (${response.status})`);
     return response.json();
+  }
+
+  function read(path, parameters) {
+    return request(path, { locale: document.documentElement.lang, ...parameters });
+  }
+
+  function create(collection, data) {
+    return request(collection, null, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
   }
 
   async function list(collection, parameters = {}) {
@@ -38,11 +51,11 @@ const cmsApi = (() => {
     }
   }
 
-  async function bySlug(collection, slug) {
+  async function bySlug(collection, slug, { depth = 1 } = {}) {
     if (!slug) return null;
     const result = await read(collection, {
       "where[slug][equals]": slug,
-      depth: "1",
+      depth: String(depth),
       limit: "1",
     });
     return result.docs[0] ?? null;
@@ -50,8 +63,8 @@ const cmsApi = (() => {
 
   function media(file) {
     const src = safeURL(file?.url, base);
-    return src ? { src, alt: file.alt ?? "" } : null;
+    return src ? { src, alt: orvaLanguage.text(file.alt ?? "") } : null;
   }
 
-  return { read, list, bySlug, media, safeURL };
+  return { read, create, list, bySlug, media, safeURL };
 })();

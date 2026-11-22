@@ -1,18 +1,23 @@
 (async () => {
   await siteContent.ready;
+  const { locale, message } = orvaLanguage;
+  const decimal = message(",", ".");
   const price = document.getElementById("c-harga");
   const downPayment = document.getElementById("c-dp");
   const term = document.getElementById("c-tenor");
   const interest = document.getElementById("c-bunga");
   const payment = document.querySelector("[data-kpr-payment]");
-  const rupiah = new Intl.NumberFormat("id-ID", { maximumFractionDigits: 0 });
-  const millions = new Intl.NumberFormat("id-ID", {
+  const rupiah = new Intl.NumberFormat(locale, { maximumFractionDigits: 0 });
+  const millions = new Intl.NumberFormat(locale, {
     minimumFractionDigits: 1,
     maximumFractionDigits: 1,
   });
 
   function parseAmount(value) {
-    return Number.parseFloat(value.replace(/[^\d,]/g, "").replace(",", "."));
+    const numeric = value.replace(/[^\d,.]/g, "");
+    return Number.parseFloat(decimal === ","
+      ? numeric.replace(/\./g, "").replace(",", ".")
+      : numeric.replace(/,/g, ""));
   }
 
   function updatePayment() {
@@ -32,7 +37,7 @@
       : (principal * monthlyRate) / (1 - (1 + monthlyRate) ** -months);
 
     payment.textContent = amount >= 1_000_000
-      ? `Rp ${millions.format(amount / 1_000_000)} Jt`
+      ? `Rp ${millions.format(amount / 1_000_000)}${message(" Jt", "M")}`
       : `Rp ${rupiah.format(amount)}`;
   }
 
