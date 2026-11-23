@@ -1,14 +1,16 @@
 const ecoArdence = (() => {
-  const { message, text } = orvaLanguage;
+  const { locale, message, text } = orvaLanguage;
+  const rupiah = new Intl.NumberFormat(locale);
   const project = "Paradise Serpong City 2";
   const cluster = "EcoArdence";
   const imageRoot = "images/eco-ardence/";
+  // Published starting prices by unit type: https://www.paradiseserpongcity2.co/
   const types = [
-    { name: "Capri", width: 6, length: 10, buildingArea: 34, floors: 1, bedrooms: 2, bathrooms: 1 },
+    { name: "Capri", width: 6, length: 10, buildingArea: 34, floors: 1, bedrooms: 2, bathrooms: 1, startingPrice: 498_000_000 },
     { name: "Catania", width: 5, length: 12, buildingArea: 36, floors: 1, bedrooms: 2, bathrooms: 1 },
-    { name: "Dafni", width: 5, length: 12, buildingArea: 58, floors: 2, bedrooms: 3, bathrooms: 2 },
-    { name: "Elato", width: 6, length: 10, buildingArea: 60, floors: 2, bedrooms: 3, bathrooms: 2 },
-    { name: "Fiora", width: 7, length: 12, buildingArea: 85, floors: 2, bedrooms: 3, bathrooms: 2, maidBedrooms: 1, maidBathrooms: 1 },
+    { name: "Dafni", width: 5, length: 12, buildingArea: 58, floors: 2, bedrooms: 3, bathrooms: 2, startingPrice: 785_000_000 },
+    { name: "Elato", width: 6, length: 10, buildingArea: 60, floors: 2, bedrooms: 3, bathrooms: 2, startingPrice: 801_000_000 },
+    { name: "Fiora", width: 7, length: 12, buildingArea: 85, floors: 2, bedrooms: 3, bathrooms: 2, maidBedrooms: 1, maidBathrooms: 1, startingPrice: 1_110_000_000 },
   ];
 
   const facilityCards = [
@@ -60,8 +62,10 @@ const ecoArdence = (() => {
       status: message("Proyek Baru", "New Development"),
       type: text("Rumah"),
       propertyType: "rumah",
-      rawPrice: null,
-      price: message("Hubungi untuk harga", "Enquire for pricing"),
+      rawPrice: type.startingPrice ?? null,
+      price: type.startingPrice == null
+        ? message("Hubungi untuk harga", "Enquire for pricing")
+        : `${message("Mulai dari", "Starting at")} Rp ${rupiah.format(type.startingPrice)}`,
       landArea: type.width * type.length,
       area: type.buildingArea,
       lotDimensions: `${type.width} × ${type.length} m`,

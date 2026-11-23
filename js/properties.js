@@ -21,7 +21,7 @@
     console.error("Gagal memuat properti:", result.reason);
     loading.textContent = text("Daftar properti belum bisa dimuat. Coba muat ulang halaman.");
   }
-  loading.hidden = !loadFailed || Boolean(catalog);
+  loading.hidden = true;
 
   const regionOf = (unit) => unit.location?.split(",").pop().trim() || "";
   const existingRegions = new Set([...region.options].map((option) => option.value));
@@ -128,7 +128,8 @@
     const template = homepageCardTemplate.content.firstElementChild;
     const configuredLimit = pageContent.value?.content?.propertyLimit;
     const limit = Number.isSafeInteger(configuredLimit) && configuredLimit > 0 ? configuredLimit : 8;
-    homepageGrid.replaceChildren(...units.slice(0, limit).map((unit) => createPropertyCard(unit, template)));
+    const featured = ecoArdence.units.slice(0, limit);
+    homepageGrid.replaceChildren(...featured.map((unit) => createPropertyCard(unit, template)));
   }
 
   function createFilterDropdown(select) {
@@ -289,7 +290,7 @@
 
     title.textContent = unit.name;
     title.href = `property-detail.html?unit=${encodeURIComponent(unit.slug)}`;
-    if (unit.cluster?.trim()) {
+    if (catalog && unit.cluster?.trim()) {
       const development = document.createElement("p");
       development.className = "property-development";
       development.textContent = unit.cluster.trim();
@@ -301,21 +302,29 @@
     location.querySelector(".property-card-location").textContent =
       place(unit.location) || text("Lokasi belum diisi");
     card.querySelector(".badge").textContent = unit.status;
-    card.querySelector(".price").textContent = unit.price;
+    const priceRow = card.querySelector(".price");
+    priceRow.textContent = unit.price;
+    if (ecoArdence.units.includes(unit)) {
+      favorite.remove();
+      priceRow.classList.add("property-starting-price");
+      if (unit.rawPrice != null) {
+        priceRow.textContent = `Rp ${unit.rawPrice.toLocaleString(locale)}`;
+      }
+    } else {
+      favorite.classList.remove("on");
+      favorite.setAttribute("aria-pressed", "false");
+      favorite.addEventListener("click", () => {
+        favorite.setAttribute(
+          "aria-pressed",
+          String(favorite.classList.toggle("on")),
+        );
+      });
+    }
 
     const [bedrooms, bathrooms, area] = card.querySelectorAll(".mini span");
     bedrooms.textContent = `${unit.bedrooms ?? "—"} ${message("KT", unit.bedrooms === 1 ? "bed" : "beds")}`;
     bathrooms.textContent = `${unit.bathrooms ?? "—"} ${message("KM", unit.bathrooms === 1 ? "bath" : "baths")}`;
     area.textContent = unit.area == null ? "— m²" : `${unit.area} m²`;
-
-    favorite.classList.remove("on");
-    favorite.setAttribute("aria-pressed", "false");
-    favorite.addEventListener("click", () => {
-      favorite.setAttribute(
-        "aria-pressed",
-        String(favorite.classList.toggle("on")),
-      );
-    });
 
     return card;
   }
