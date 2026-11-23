@@ -2,6 +2,10 @@
 const nav = document.getElementById("nav");
 const menuButton = document.getElementById("burger");
 const primaryMenu = document.getElementById("primary-menu");
+const menuViewport = document.createElement("div");
+menuViewport.className = "mobile-menu-viewport";
+primaryMenu.before(menuViewport);
+menuViewport.append(primaryMenu);
 const navActions = menuButton.closest(".nav-actions");
 const navSwitches = navActions.querySelector(".nav-switches");
 const mobileNav = window.matchMedia("(max-width: 1024px)");

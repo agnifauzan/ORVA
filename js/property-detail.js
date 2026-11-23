@@ -68,6 +68,9 @@
     ["Luas", unit.landArea == null && unit.buildingArea == null ? fields.area : null],
     ["Luas tanah", fields["land-area"]],
     ["Luas bangunan", fields["building-area"]],
+    ["Ukuran tanah", unit.lotDimensions],
+    ["Klaster", unit.cluster],
+    ["Pengembang", unit.developer],
     ["Sertifikat", certificates[unit.certificate]],
     ["Izin bangunan (IMB/PBG)", buildingPermits[unit.buildingPermit]],
     ["Kondisi perabot", furnishings[unit.furnishing]],
@@ -90,15 +93,108 @@
   }
   specs.hidden = !specs.childElementCount;
   const facilityList = byId("unit-facility-list");
-  for (const line of (unit.facilities ?? "").split(/\r?\n/)) {
-    const facility = line.trim();
-    if (!facility) continue;
+  const facilities = unit.facilityCards ?? (unit.facilities ?? "").split(/\r?\n/)
+    .map((line) => line.trim()).filter(Boolean).map((name) => ({ name: text(name) }));
+  for (const { name, photo, description } of facilities) {
     const item = document.createElement("li");
-    item.textContent = text(facility);
+    if (photo) {
+      const image = document.createElement("img");
+      image.src = photo;
+      image.alt = "";
+      image.loading = "lazy";
+      image.addEventListener("error", () => image.remove(), { once: true });
+      item.append(image);
+    }
+    const caption = document.createElement("div");
+    caption.className = "unit-facility-caption";
+    const title = document.createElement("strong");
+    title.textContent = name;
+    caption.append(title);
+    if (description) {
+      const detail = document.createElement("p");
+      detail.textContent = description;
+      caption.append(detail);
+    }
+    item.append(caption);
     facilityList.append(item);
   }
-  byId("unit-facilities").hidden = !facilityList.childElementCount;
-  byId("unit-specs-empty").hidden = !specs.hidden || facilityList.childElementCount > 0;
+  byId("unit-facilities").hidden = !facilities.length;
+  byId("unit-specs-empty").hidden = !specs.hidden || facilities.length > 0;
+
+  if (facilities.length > 1) {
+    const controls = byId("unit-facility-controls");
+    const prev = byId("unit-facility-prev");
+    const next = byId("unit-facility-next");
+    prev.setAttribute("aria-label", message("Fasilitas sebelumnya", "Previous facility"));
+    next.setAttribute("aria-label", message("Fasilitas berikutnya", "Next facility"));
+    const updateControls = () => {
+      const end = facilityList.scrollWidth - facilityList.clientWidth;
+      controls.hidden = end <= 1;
+      prev.disabled = facilityList.scrollLeft <= 1;
+      next.disabled = facilityList.scrollLeft >= end - 1;
+    };
+    const scroll = (direction) => {
+      const [first, second] = facilityList.children;
+      const step = second.offsetLeft - first.offsetLeft;
+      facilityList.scrollBy({ left: step * direction });
+    };
+    prev.addEventListener("click", () => scroll(-1));
+    next.addEventListener("click", () => scroll(1));
+    facilityList.addEventListener("scroll", updateControls, { passive: true });
+    new ResizeObserver(updateControls).observe(facilityList);
+    updateControls();
+  }
+
+  if (unit.plans?.length || unit.brochure) {
+    const grid = byId("unit-plan-grid");
+    grid.hidden = !unit.plans?.length;
+    for (const plan of unit.plans ?? []) {
+      const figure = document.createElement("figure");
+      const image = document.createElement("img");
+      image.src = plan.src;
+      image.alt = plan.label;
+      image.loading = "lazy";
+      const caption = document.createElement("figcaption");
+      const link = document.createElement("a");
+      link.href = plan.src;
+      link.target = "_blank";
+      link.rel = "noopener";
+      link.textContent = plan.label;
+      caption.append(link);
+      figure.append(image, caption);
+      grid.append(figure);
+    }
+    const brochureLink = byId("unit-brochure-link");
+    if (unit.brochure) brochureLink.href = unit.brochure;
+    brochureLink.hidden = !unit.brochure;
+    byId("unit-plans").hidden = false;
+  }
+
+  for (const [label, value, layout] of [
+    ["Denah dan Ukuran Ruangan", unit.floorPlanNotes],
+    ["Spesifikasi Material", unit.technicalSpecs, "unit-facilities--four-columns"],
+    ["Paket Smart Home", unit.smartHome, "unit-facilities--four-columns"],
+    ["Lokasi Rumah Contoh dan Galeri Pemasaran", unit.showUnitLocations],
+  ]) {
+    const lines = (value ?? "").split(/\r?\n/).map((line) => line.trim()).filter(Boolean);
+    if (!lines.length) continue;
+    const section = document.createElement("section");
+    section.className = "unit-description";
+    const heading = document.createElement("h2");
+    heading.textContent = text(label);
+    const details = document.createElement("div");
+    details.className = "unit-facilities";
+    if (layout) details.classList.add(layout);
+    const list = document.createElement("ul");
+    for (const line of lines) {
+      const item = document.createElement("li");
+      item.textContent = text(line);
+      list.append(item);
+    }
+    details.append(list);
+    section.append(heading, details);
+    byId("unit-brochure-details").append(section);
+  }
 
   const description = byId("unit-description");
   const paragraphs = unit.description?.trim().split(/\r?\n\s*\r?\n/) ?? [];

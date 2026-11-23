@@ -13,13 +13,15 @@
   ]);
   const loading = document.querySelector("[data-property-load-status]");
   const loadFailed = result.status === "rejected";
-  const units = loadFailed ? [] : result.value;
+  const cmsUnits = loadFailed ? [] : result.value;
+  const units = catalog
+    ? [...ecoArdence.units, ...cmsUnits.filter((unit) => unit.transaction === "sewa")]
+    : cmsUnits;
   if (loadFailed) {
     console.error("Gagal memuat properti:", result.reason);
     loading.textContent = text("Daftar properti belum bisa dimuat. Coba muat ulang halaman.");
-  } else {
-    loading.hidden = true;
   }
+  loading.hidden = !loadFailed || Boolean(catalog);
 
   const regionOf = (unit) => unit.location?.split(",").pop().trim() || "";
   const existingRegions = new Set([...region.options].map((option) => option.value));
@@ -287,6 +289,12 @@
 
     title.textContent = unit.name;
     title.href = `property-detail.html?unit=${encodeURIComponent(unit.slug)}`;
+    if (unit.cluster?.trim()) {
+      const development = document.createElement("p");
+      development.className = "property-development";
+      development.textContent = unit.cluster.trim();
+      title.closest("h3").after(development);
+    }
     photo.src = unit.photo || "images/property-1.svg";
     photo.alt = unit.alt || message(`Foto ${unit.name}`, `Photo of ${unit.name}`);
 
@@ -324,9 +332,16 @@
     let page = 1;
     let orderedCards = cards;
     const viewButtons = catalog.querySelectorAll("[data-view]");
+    const priceOrder = (direction) => (a, b) => {
+      const first = Number(a.dataset.price);
+      const second = Number(b.dataset.price);
+      if (!Number.isFinite(first)) return Number.isFinite(second) ? 1 : 0;
+      if (!Number.isFinite(second)) return -1;
+      return direction * (first - second);
+    };
     const sortBy = {
-      "price-asc": (a, b) => Number(a.dataset.price) - Number(b.dataset.price),
-      "price-desc": (a, b) => Number(b.dataset.price) - Number(a.dataset.price),
+      "price-asc": priceOrder(1),
+      "price-desc": priceOrder(-1),
       "area-desc": (a, b) => Number(b.dataset.area) - Number(a.dataset.area),
     };
 
@@ -358,11 +373,13 @@
         card.hidden = !visibleCards.has(card);
       }
 
-      count.textContent = loadFailed ? "—" : message(
+      const unavailable = loadFailed && status === "sewa";
+      loading.hidden = !unavailable;
+      count.textContent = unavailable ? "—" : message(
         `${matches.length} properti`,
         `${matches.length} ${matches.length === 1 ? "property" : "properties"}`,
       );
-      empty.hidden = loadFailed || matches.length > 0;
+      empty.hidden = unavailable || matches.length > 0;
       renderPagination(pageCount);
     }
 

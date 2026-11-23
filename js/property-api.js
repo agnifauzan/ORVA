@@ -28,6 +28,7 @@ const propertyApi = (() => {
       rawPrice: item.price,
       name: text(item.name),
       location: item.location,
+      cluster: item.cluster,
       transaction: rental ? "sewa" : "jual",
       status: text(rental ? "Disewa" : "Dijual"),
       propertyType: item.propertyType,
@@ -43,13 +44,35 @@ const propertyApi = (() => {
   }
 
   async function getUnit(slug) {
+    const projectUnit = typeof ecoArdence === "undefined"
+      ? null
+      : ecoArdence.units.find((unit) => unit.slug === slug);
+    if (projectUnit) return projectUnit;
     const item = await cmsApi.bySlug("properties", slug);
     if (!item) return null;
+    const plans = (item.floorPlans ?? [])
+      .filter((file) => file?.mimeType?.startsWith("image/"))
+      .map(cmsApi.media)
+      .filter(Boolean);
+    const facilityCards = (item.facilityCards ?? [])
+      .filter(({ name }) => name?.trim())
+      .map(({ name, photo }) => ({
+        name: text(name.trim()),
+        photo: photo?.mimeType?.startsWith("image/") ? cmsApi.media(photo)?.src : undefined,
+      }));
     return {
       ...mapUnit(item),
       gallery: (item.gallery ?? []).map(cmsApi.media).filter(Boolean),
       youtubeUrl: item.youtubeUrl,
+      plans: plans.map(({ src, alt }, index) => ({
+        src,
+        label: alt || message(`Denah ${index + 1}`, `Floor plan ${index + 1}`),
+      })),
+      brochure: item.brochure?.mimeType === "application/pdf"
+        ? cmsApi.media(item.brochure)?.src
+        : null,
       landArea: item.landArea,
+      lotDimensions: item.lotDimensions,
       buildingArea: item.buildingArea,
       certificate: item.certificate,
       buildingPermit: item.buildingPermit,
@@ -62,6 +85,12 @@ const propertyApi = (() => {
       electricity: item.electricity,
       water: item.water,
       facilities: item.facilities,
+      facilityCards: facilityCards.length ? facilityCards : undefined,
+      developer: item.developer,
+      smartHome: item.smartHome,
+      technicalSpecs: item.technicalSpecs,
+      floorPlanNotes: item.floorPlanNotes,
+      showUnitLocations: item.showUnitLocations,
       agent: item.agent?.active ? item.agent : null,
     };
   }
@@ -70,6 +99,9 @@ const propertyApi = (() => {
     const items = await cmsApi.list("properties", {
       ...(sort && { sort }),
       "select[gallery]": "false",
+      "select[floorPlans]": "false",
+      "select[facilityCards]": "false",
+      "select[brochure]": "false",
       "select[youtubeUrl]": "false",
     });
     return items.map(mapUnit);
