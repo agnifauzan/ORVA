@@ -205,22 +205,40 @@
   }
 
   const photos = new Map();
+  const photoKey = (src) => new URL(src, document.baseURI).href;
   if (unit.photo) {
-    photos.set(unit.photo, { src: unit.photo, alt: unit.alt });
+    photos.set(photoKey(unit.photo), { src: unit.photo, alt: unit.alt });
   }
   for (const image of unit.gallery ?? []) {
-    if (!photos.has(image.src)) photos.set(image.src, image);
+    const key = photoKey(image.src);
+    if (!photos.has(key)) photos.set(key, image);
+  }
+
+  const examplePhotos = [
+    ["images/property-villa.jpg", "Contoh foto eksterior vila", "Sample villa exterior"],
+    ["images/about-villa.jpg", "Contoh foto hunian", "Sample home photo"],
+    ["images/eco-ardence/fasilitas-kolam.jpg", "Contoh foto kolam renang", "Sample swimming pool photo"],
+    ["images/eco-ardence/fasilitas-coworking.jpg", "Contoh foto ruang kerja bersama", "Sample coworking space photo"],
+    ["images/eco-ardence/fasilitas-river-walk.jpg", "Contoh foto area pejalan kaki", "Sample walking path photo"],
+  ];
+  for (const [src, label, englishLabel] of examplePhotos) {
+    if (photos.size >= 5) break;
+    const key = photoKey(src);
+    if (!photos.has(key)) photos.set(key, { src, alt: message(label, englishLabel), example: true });
   }
 
   const gallery = [...photos.values()].slice(0, 5);
   if (gallery.length) {
     const photo = byId("unit-photo");
+    const caption = byId("unit-photo-caption");
     const thumbnails = byId("unit-thumbnails");
     const showPhoto = (index) => {
       const image = gallery[index];
       photo.src = image.src;
       photo.alt =
         image.alt || message(`Foto ${unit.name}`, `Photo of ${unit.name}`);
+      caption.hidden = !image.example;
+      caption.textContent = image.example ? image.alt : "";
       for (const [position, button] of Array.from(
         thumbnails.children,
       ).entries()) {
@@ -255,20 +273,29 @@
     byId("unit-gallery").hidden = false;
   }
 
-  const videoID = unit.youtubeUrl?.match(
+  const projectVideo = byId("unit-project-video");
+  const projectLink = projectVideo.querySelector("a");
+  const projectUrl = new URL(projectLink.href);
+  const projectVideoID = projectUrl.searchParams.get("v");
+  const unitVideoID = unit.youtubeUrl?.match(
     /^https:\/\/www\.youtube\.com\/watch\?v=([\w-]{11})$/,
   )?.[1];
-  if (videoID) {
-    const player = byId("unit-video-player");
-    player.title = message(
-      `Video ${unit.name} di YouTube`,
-      `Video of ${unit.name} on YouTube`,
-    );
-    player.src = `https://www.youtube-nocookie.com/embed/${videoID}?playsinline=1`;
-    byId("unit-video-link").href = `https://www.youtube.com/watch?v=${videoID}`;
-    byId("unit-video-content").hidden = false;
-    byId("unit-video-empty").hidden = true;
+  const videoID = unitVideoID || projectVideoID;
+  const isProjectVideo = videoID === projectVideoID;
+  const projectTitle = projectLink.textContent.trim();
+  const player = byId("unit-video-player");
+  player.title = isProjectVideo
+    ? projectTitle
+    : message(
+        `Video ${unit.name} di YouTube`,
+        `Video of ${unit.name} on YouTube`,
+      );
+  if (isProjectVideo) {
+    byId("unit-video-title").textContent = projectTitle;
   }
+  player.src = `https://www.youtube-nocookie.com/embed/${videoID}?playsinline=1`;
+  byId("unit-video-link").href = `https://www.youtube.com/watch?v=${videoID}`;
+  projectVideo.hidden = isProjectVideo;
 
   const contact = byId("unit-whatsapp");
   const directWhatsApp = unit.agent ? agentApi.whatsappURL(unit.agent) : null;

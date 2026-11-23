@@ -11,7 +11,25 @@
 
   root.dataset.theme = savedTheme === "light" ? "light" : "dark";
 
+  // Recolor the dark lettering of the bundled PNG while retaining its alpha.
+  function installLogoFilter() {
+    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute("aria-hidden", "true");
+    svg.style.cssText = "position:absolute;width:0;height:0;pointer-events:none";
+    svg.innerHTML = `
+      <filter id="orva-white-logo" color-interpolation-filters="sRGB">
+        <feColorMatrix in="SourceGraphic" type="matrix" result="whiteLettering"
+          values="0 0 0 0 1
+                  0 0 0 0 1
+                  0 0 0 0 1
+                 -5 0 2 0 1"/>
+        <feComposite in="whiteLettering" in2="SourceGraphic" operator="atop"/>
+      </filter>`;
+    document.body.append(svg);
+  }
+
   document.addEventListener("DOMContentLoaded", () => {
+    installLogoFilter();
     const toggle = document.querySelector(".theme-toggle");
     const buttons = toggle.querySelectorAll("[data-theme-choice]");
 

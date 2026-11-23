@@ -162,18 +162,44 @@ const siteContent = (() => {
     text(document.querySelector("footer .copy"), footer.copyright);
   }
 
+  function applyLogos(header) {
+    const logos = document.querySelectorAll(".logo img, footer .foot-grid > div:first-child img");
+    if (!logos.length) return;
+
+    // Existing installations may still reference an earlier bundled logo.
+    const bundledLogos = ["orva-logo.svg", "orva-logo-light.svg", "orva-logo-light.png"];
+    const darkLogo = bundledLogos.includes(header.logo?.filename) ? null : cmsApi.media(header.logo);
+    const lightLogo = bundledLogos.includes(header.lightLogo?.filename) ? null : cmsApi.media(header.lightLogo);
+
+    if (darkLogo) {
+      const preview = new Image();
+      preview.onload = () => {
+        for (const logo of logos) {
+          logo.classList.add("site-logo");
+          logo.src = darkLogo.src;
+          if (logo.alt && darkLogo.alt) logo.alt = darkLogo.alt;
+        }
+      };
+      preview.src = darkLogo.src;
+    }
+
+    if (lightLogo) {
+      const preview = new Image();
+      preview.onload = () => {
+        for (const logo of logos) {
+          logo.classList.add("site-logo");
+          logo.style.setProperty("--site-light-logo", `url(${JSON.stringify(lightLogo.src)})`);
+        }
+      };
+      preview.src = lightLogo.src;
+    }
+  }
+
   function applySite(data) {
     if (!data.updatedAt) return;
     if (data.header) {
       applyMenu(data.header);
-      const lightLogo = cmsApi.media(data.header.lightLogo);
-      for (const logo of document.querySelectorAll(".logo img, footer .foot-grid > div:first-child img")) {
-        image(logo, data.header.logo);
-        logo.classList.add("site-logo");
-        if (lightLogo) {
-          logo.style.setProperty("--site-light-logo", `url(${JSON.stringify(lightLogo.src)})`);
-        }
-      }
+      applyLogos(data.header);
     }
     if (data.footer) applyFooter(data.footer);
   }
