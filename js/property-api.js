@@ -55,27 +55,31 @@ const propertyApi = (() => {
     const naturaUnit = typeof serpongNatura === "undefined"
       ? null
       : serpongNatura.units.find((unit) => unit.slug === slug);
-    if (naturaUnit) return naturaUnit;
-
-    const projectUnit = typeof ecoArdence === "undefined"
+    const projectUnit = naturaUnit ?? (typeof ecoArdence === "undefined"
       ? null
-      : ecoArdence.units.find((unit) => unit.slug === slug);
+      : ecoArdence.units.find((unit) => unit.slug === slug));
     const item = await cmsApi.bySlug("properties", slug).catch((error) => {
       if (!projectUnit) throw error;
-      console.error("Gagal memuat unit EcoArdence dari CMS:", error);
+      console.error("Gagal memuat unit proyek dari CMS:", error);
       return null;
     });
-    if (!item) return projectUnit ?? null;
-    const plans = (item.floorPlans ?? [])
-      .filter((file) => file?.mimeType?.startsWith("image/"))
-      .map(cmsApi.media)
-      .filter(Boolean);
-    const facilityCards = (item.facilityCards ?? [])
-      .filter(({ name }) => name?.trim())
+    const facilityCards = (item?.facilityCards ?? [])
+      .filter((card) => card?.name?.trim())
       .map(({ name, photo }) => ({
         name: text(name.trim()),
         photo: photo?.mimeType?.startsWith("image/") ? cmsApi.media(photo)?.src : undefined,
       }));
+    const facilityFields = {
+      facilities: item?.facilities,
+      facilityCards: facilityCards.length ? facilityCards : undefined,
+    };
+    if (naturaUnit || !item) {
+      return projectUnit ? { ...projectUnit, ...facilityFields } : null;
+    }
+    const plans = (item.floorPlans ?? [])
+      .filter((file) => file?.mimeType?.startsWith("image/"))
+      .map(cmsApi.media)
+      .filter(Boolean);
     return {
       ...mapUnit(item),
       gallery: (item.gallery ?? []).map(cmsApi.media).filter(Boolean),
@@ -96,8 +100,7 @@ const propertyApi = (() => {
       maidBathrooms: item.maidBathrooms,
       electricity: item.electricity,
       water: item.water,
-      facilities: item.facilities,
-      facilityCards: facilityCards.length ? facilityCards : undefined,
+      ...facilityFields,
       developer: item.developer,
       smartHome: item.smartHome,
       technicalSpecs: item.technicalSpecs,

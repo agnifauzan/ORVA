@@ -9,27 +9,21 @@
   const target = document.querySelector("#kawasan-profile");
   if (!target) return;
 
-  const naturaCatalog = "https://serpongnaturacity.co.id/berita-media/rumah-dijual-di-serpong/";
-  const paradiseSite = "https://www.paradiseserpongcity2.co/";
   const profiles = {
     "paradise-serpong-city-2": {
       name: ecoArdence.project,
-      theme: "paradise",
+      slides: [
+        ["images/eco-ardence/fasilitas-river-walk.jpg", "Paradise River Walk"],
+        ["images/eco-ardence/fasilitas-kolam.jpg", message("Kolam renang EcoClub", "EcoClub swimming pool")],
+        ["images/eco-ardence/gerbang.webp", message("Gerbang kawasan Paradise Serpong City 2", "Paradise Serpong City 2 entrance")],
+      ],
       developer: "Progress Group",
       area: 500,
       location: "Jl. H. Atma Asnawi, Gunung Sindur",
       summary: message(
-        "Kota mandiri di kawasan Serpong Selatan dengan ruang terbuka hijau dan fasilitas untuk aktivitas keluarga.",
-        "A township in the South Serpong area with green spaces and family amenities.",
+        "Paradise Serpong City 2 adalah kawasan kota mandiri yang dikembangkan Progress Group di koridor Serpong Selatan–Gunung Sindur. Pengembangannya memadukan area hunian, ruang terbuka hijau, dan area komersial. Di cluster EcoArdence, tersedia pilihan desain rumah satu dan dua lantai dengan ukuran bangunan dan tanah yang beragam.",
+        "Paradise Serpong City 2 is a township developed by Progress Group in the South Serpong–Gunung Sindur corridor. The development combines residential areas, open green spaces, and commercial areas. Its EcoArdence cluster features one- and two-storey home designs with a range of building and lot sizes.",
       ),
-      facilities: message(
-        "Clubhouse, kolam renang, Paradise River Walk, jalur lari dan sepeda, area bermain, dan keamanan 24 jam.",
-        "Clubhouse, swimming pool, Paradise River Walk, jogging and cycling paths, playgrounds, and 24-hour security.",
-      ),
-      map: "https://www.google.com/maps/search/?api=1&query=Paradise+Serpong+City+2+Gunung+Sindur",
-      source: paradiseSite,
-      brochure: paradiseSite,
-      brochureLabel: message("Situs kawasan", "Development website"),
       clusters: [{
         name: ecoArdence.cluster,
         types: ecoArdence.units,
@@ -37,22 +31,18 @@
     },
     "serpong-natura-city": {
       name: serpongNatura.project,
-      theme: "natura",
+      slides: [
+        ["https://serpongnaturacity.co.id/wp-content/uploads/2024/07/Swimming-pool-Serpong-Natura-City-web.jpg", message("Kolam renang Serpong Natura City", "Serpong Natura City swimming pool")],
+        ["https://serpongnaturacity.co.id/wp-content/uploads/2019/03/Sunny-Es-Teler-77-Fountain-Plaza.jpg", "Natura Square"],
+        ["https://serpongnaturacity.co.id/wp-content/uploads/2023/12/Signature-Mediterania-123-Fasad-Serpong-Natura-City-730x520.jpg", message("Contoh fasad The Signature", "Example facade at The Signature")],
+      ],
       developer: serpongNatura.developer,
       area: 210,
       location: message("Koridor BSD–Bogor", "BSD–Bogor corridor"),
       summary: message(
-        "Kawasan hunian dengan ruang terbuka hijau, fasilitas olahraga, dan pilihan rumah bergaya Skandinavia hingga Mediterania.",
-        "A residential development with green spaces, sports facilities, and homes ranging from Scandinavian to Mediterranean styles.",
+        "Serpong Natura City adalah kawasan hunian terpadu di koridor BSD–Bogor yang dikembangkan dengan konsep lingkungan hijau. Tiap cluster punya karakter berbeda, mulai dari rumah bergaya Skandinavia di Orchard Park hingga desain Mediterania dan Neo Classic di The Signature. Pilihan ukuran bangunan dan tanah bisa dibandingkan melalui daftar tipe rumah di bawah.",
+        "Serpong Natura City is an integrated residential development in the BSD–Bogor corridor, designed around green spaces. Each cluster has its own character, from Scandinavian homes at Orchard Park to Mediterranean and Neo Classic designs at The Signature. Building and lot sizes can be compared in the home listings below.",
       ),
-      facilities: message(
-        "Clubhouse, kolam renang, pusat kebugaran, Natura Green Park, lapangan olahraga, dan Masjid Raya Natura.",
-        "Clubhouse, swimming pool, fitness center, Natura Green Park, sports courts, and Masjid Raya Natura.",
-      ),
-      map: "https://www.google.com/maps/search/?api=1&query=-6.369357%2C106.681350",
-      source: naturaCatalog,
-      brochure: serpongNatura.brochure,
-      brochureLabel: message("Brosur, daftar harga & stok", "Brochures, price list & stock"),
       clusters: serpongNatura.clusters,
     },
   };
@@ -61,61 +51,89 @@
   if (!Object.hasOwn(profiles, key)) return;
 
   const profile = profiles[key];
-  const typesCount = profile.clusters.reduce((total, cluster) => total + cluster.types.length, 0);
+  target.dataset.profile = key;
   const fields = [
     [message("Pengembang", "Developer"), profile.developer],
-    [message("Lokasi", "Location"), profile.location],
     [message("Luas pengembangan", "Development area"), `${profile.area} ha`],
-    [message("Cluster dalam profil", "Clusters listed"), profile.clusters.length],
-    [message("Tipe rumah dalam profil", "Home types listed"), typesCount],
+    [message("Cluster", "Clusters"), profile.clusters.length],
+    [message("Lokasi", "Location"), profile.location],
+  ];
+
+  const clusterTabs = [
+    {
+      name: message("Semua cluster", "All clusters"),
+      types: profile.clusters.flatMap((cluster) => cluster.types),
+    },
+    ...profile.clusters,
   ];
 
   document.title = `${profile.name} — ORVA`;
   document.querySelector('meta[name="description"]').content = profile.summary;
   target.innerHTML = `
-    <header class="kawasan-hero kawasan-${profile.theme}">
-      <div class="kawasan-card-content">
-        <span>${message("Profil Kawasan", "Development Profile")}</span>
-        <h1>${profile.name}</h1>
+    <header aria-labelledby="kawasan-overview">
+      <div class="kawasan-meta">
+        <div class="kawasan-banner-slider" role="group" aria-label="${message("Foto kawasan", "Development photos")}">
+          <img class="kawasan-overview-image" decoding="async" alt="" />
+          <p class="kawasan-banner-empty" hidden>${message("Foto belum tersedia", "Photo unavailable")}</p>
+          <button class="kawasan-banner-arrow kawasan-banner-prev" type="button" aria-label="${message("Foto sebelumnya", "Previous photo")}"><span aria-hidden="true">←</span></button>
+          <button class="kawasan-banner-arrow kawasan-banner-next" type="button" aria-label="${message("Foto berikutnya", "Next photo")}"><span aria-hidden="true">→</span></button>
+          <span class="kawasan-banner-count" role="status"></span>
+        </div>
+        <div class="kawasan-overview-copy">
+          <h1 id="kawasan-overview">${key === "serpong-natura-city"
+              ? 'Serpong <span class="gold">Natura City</span>'
+              : profile.name}</h1>
+          <div class="kawasan-overview-panel">
+            <p>${profile.summary}</p>
+            <dl class="kawasan-overview-facts">
+              ${fields.map(([label, value]) => `<div><dt>${label}</dt><dd>${value}</dd></div>`).join("")}
+            </dl>
+          </div>
+        </div>
       </div>
     </header>
-    <section aria-labelledby="kawasan-overview">
-      <h2 id="kawasan-overview">${message("Tentang kawasan", "About the development")}</h2>
-      <div class="kawasan-meta">
-        <div class="kawasan-panel">
-          <p>${profile.summary}</p>
-          <p><strong>${message("Fasilitas kawasan", "Amenities")}</strong><br>${profile.facilities}</p>
-          <p><a class="kawasan-text-link" href="${profile.map}">${message("Lihat lokasi di peta", "View location on map")}</a></p>
-        </div>
-        <dl class="kawasan-panel">
-          ${fields.map(([label, value]) => `<dt>${label}</dt><dd>${value}</dd>`).join("")}
-        </dl>
-      </div>
-    </section>
     <section aria-labelledby="kawasan-clusters">
-      <h2 id="kawasan-clusters">${message("Cluster dan tipe rumah", "Clusters and home types")}</h2>
+      <div class="kawasan-section-heading">
+        <h2 id="kawasan-clusters">${message("Cluster dan", "Clusters and")} <span class="gold">${message("tipe rumah", "home types")}</span></h2>
+      </div>
       <div class="kawasan-tabs" role="tablist" aria-labelledby="kawasan-clusters">
-        ${profile.clusters.map((cluster, index) => `
+        ${clusterTabs.map((cluster, index) => `
           <button class="kawasan-tab" type="button" role="tab" id="cluster-tab-${index}"
             aria-controls="cluster-panel-${index}" aria-selected="${index === 0}" tabindex="${index === 0 ? 0 : -1}">
             ${cluster.name}
-            <span>${cluster.types.length} ${message("tipe rumah", cluster.types.length === 1 ? "home type" : "home types")}</span>
+            <span aria-label="${cluster.types.length} ${message("tipe rumah", cluster.types.length === 1 ? "home type" : "home types")}">${cluster.types.length}</span>
           </button>`).join("")}
       </div>
-      ${profile.clusters.map((cluster, index) => `
+      ${clusterTabs.map((cluster, index) => `
         <div class="kawasan-cluster" role="tabpanel" id="cluster-panel-${index}"
           aria-labelledby="cluster-tab-${index}" tabindex="0"${index === 0 ? "" : " hidden"}>
-          <div class="grid-4 kawasan-property-grid" data-cluster-cards></div>
-          <a class="btn btn-outline" href="properties.html?${new URLSearchParams({ lokasi: profile.name, cluster: cluster.name })}#daftar-properti">
-            ${message("Lihat properti di cluster ini", "View properties in this cluster")}
-          </a>
+          <div class="grid-4" data-cluster-cards></div>
         </div>`).join("")}
-      <p class="kawasan-actions">
-        <a class="btn btn-outline" href="${profile.brochure}">${profile.brochureLabel}</a>
-        <a class="btn btn-gold" href="contact.html#konsultasi">${message("Tanya ketersediaan unit", "Enquire about availability")}</a>
-      </p>
-      ${profile.source === profile.brochure ? "" : `<p><a class="kawasan-text-link" href="${profile.source}">${message("Sumber spesifikasi rumah", "Source for home specifications")}</a></p>`}
     </section>`;
+  const slider = target.querySelector(".kawasan-banner-slider");
+  const overviewImage = slider.querySelector("img");
+  const emptyImage = slider.querySelector(".kawasan-banner-empty");
+  const slideCount = slider.querySelector(".kawasan-banner-count");
+  let slideIndex = 0;
+
+  function showSlide(index) {
+    slideIndex = (index + profile.slides.length) % profile.slides.length;
+    const [src, alt] = profile.slides[slideIndex];
+    overviewImage.hidden = false;
+    emptyImage.hidden = true;
+    overviewImage.alt = alt;
+    overviewImage.src = src;
+    slideCount.textContent = `${slideIndex + 1} / ${profile.slides.length}`;
+  }
+
+  overviewImage.addEventListener("error", () => {
+    overviewImage.hidden = true;
+    emptyImage.hidden = false;
+  });
+  slider.querySelector(".kawasan-banner-prev").addEventListener("click", () => showSlide(slideIndex - 1));
+  slider.querySelector(".kawasan-banner-next").addEventListener("click", () => showSlide(slideIndex + 1));
+  showSlide(0);
+
   const tabs = [...target.querySelectorAll('[role="tab"]')];
   const panels = [...target.querySelectorAll('[role="tabpanel"]')];
 
@@ -147,7 +165,7 @@
 
   const template = document.getElementById("kawasan-property-template").content.firstElementChild;
   target.querySelectorAll("[data-cluster-cards]").forEach((grid, index) => {
-    const cards = profile.clusters[index].types.map((unit) =>
+    const cards = clusterTabs[index].types.map((unit) =>
       createPropertyCard(unit, template, { isProject: true }),
     );
     grid.replaceChildren(...cards);
