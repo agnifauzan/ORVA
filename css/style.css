@@ -1495,6 +1495,13 @@ footer {
   outline: 2px solid var(--gold);
   outline-offset: 2px;
 }
+.property-cluster-filter:not([hidden]) {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 16px;
+}
 .catalog-toolbar {
   display: flex;
   justify-content: space-between;

@@ -1,9 +1,11 @@
-(() => {
+(async () => {
   const container = document.getElementById("eco-ardence-types");
   const { message } = orvaLanguage;
   const typeURL = (unit) => `property-detail.html?unit=${unit.slug}`;
+  const cmsUnits = await propertyApi.listUnits().catch(() => []);
+  const units = propertyApi.projectUnits(cmsUnits);
 
-  for (const unit of ecoArdence.units) {
+  for (const unit of units) {
     const card = document.createElement("a");
     card.className = "project-type";
     card.href = typeURL(unit);
@@ -35,7 +37,7 @@
 
   const comparison = document.getElementById("eco-ardence-comparison");
   if (!comparison) return;
-  for (const unit of ecoArdence.units) {
+  for (const unit of units) {
     const row = document.createElement("tr");
     const title = document.createElement("th");
     title.scope = "row";

@@ -14,14 +14,14 @@
   const loading = document.querySelector("[data-property-load-status]");
   const loadFailed = result.status === "rejected";
   const cmsUnits = loadFailed ? [] : result.value;
-  const units = catalog
-    ? [...ecoArdence.units, ...cmsUnits.filter((unit) => unit.transaction === "sewa")]
-    : cmsUnits;
+  const projectUnits = propertyApi.projectUnits(cmsUnits);
+  const projectSlugs = new Set(projectUnits.map(({ slug }) => slug));
+  const units = [...projectUnits, ...cmsUnits.filter(({ slug }) => !projectSlugs.has(slug))];
   if (loadFailed) {
     console.error("Gagal memuat properti:", result.reason);
-    loading.textContent = text("Daftar properti belum bisa dimuat. Coba muat ulang halaman.");
+    if (loading) loading.textContent = text("Daftar properti belum bisa dimuat. Coba muat ulang halaman.");
   }
-  loading.hidden = true;
+  if (loading) loading.hidden = true;
 
   const regionOf = (unit) => unit.location?.split(",").pop().trim() || "";
   const existingRegions = new Set([...region.options].map((option) => option.value));
@@ -122,14 +122,13 @@
   }
 
   const renderCatalog = catalog && initCatalog();
-  const homepageGrid = document.getElementById("homepage-property-results");
-  const homepageCardTemplate = document.getElementById("homepage-property-template");
-  if (homepageCardTemplate) {
-    const template = homepageCardTemplate.content.firstElementChild;
+
+  const featuredGrid = document.getElementById("homepage-property-results");
+  if (featuredGrid) {
+    const template = document.getElementById("homepage-property-template").content.firstElementChild;
     const configuredLimit = pageContent.value?.content?.propertyLimit;
     const limit = Number.isSafeInteger(configuredLimit) && configuredLimit > 0 ? configuredLimit : 8;
-    const featured = ecoArdence.units.slice(0, limit);
-    homepageGrid.replaceChildren(...featured.map((unit) => createPropertyCard(unit, template)));
+    featuredGrid.replaceChildren(...units.slice(0, limit).map((unit) => renderCard(unit, template)));
   }
 
   function createFilterDropdown(select) {
@@ -275,64 +274,37 @@
     syncSummary();
   }
 
-  function createPropertyCard(unit, cardTemplate) {
-    const card = cardTemplate.cloneNode(true);
-    const title = card.querySelector(".property-card-link");
-    const photo = card.querySelector(".pimg img");
-    const location = card.querySelector(".loc");
-    const favorite = card.querySelector(".heart");
-
-    card.dataset.status = unit.transaction;
-    card.dataset.region = regionOf(unit);
-    card.dataset.propertyType = unit.propertyType || "";
-    card.dataset.price = String(unit.rawPrice);
-    card.dataset.area = String(unit.area ?? 0);
-
-    title.textContent = unit.name;
-    title.href = `property-detail.html?unit=${encodeURIComponent(unit.slug)}`;
-    if (catalog && unit.cluster?.trim()) {
-      const development = document.createElement("p");
-      development.className = "property-development";
-      development.textContent = unit.cluster.trim();
-      title.closest("h3").after(development);
-    }
-    photo.src = unit.photo || "images/property-1.svg";
-    photo.alt = unit.alt || message(`Foto ${unit.name}`, `Photo of ${unit.name}`);
-
-    location.querySelector(".property-card-location").textContent =
-      place(unit.location) || text("Lokasi belum diisi");
-    card.querySelector(".badge").textContent = unit.status;
-    const priceRow = card.querySelector(".price");
-    priceRow.textContent = unit.price;
-    if (ecoArdence.units.includes(unit)) {
-      favorite.remove();
-      priceRow.classList.add("property-starting-price");
-      if (unit.rawPrice != null) {
-        priceRow.textContent = `Rp ${unit.rawPrice.toLocaleString(locale)}`;
-      }
-    } else {
-      favorite.classList.remove("on");
-      favorite.setAttribute("aria-pressed", "false");
-      favorite.addEventListener("click", () => {
-        favorite.setAttribute(
-          "aria-pressed",
-          String(favorite.classList.toggle("on")),
-        );
-      });
-    }
-
-    const [bedrooms, bathrooms, area] = card.querySelectorAll(".mini span");
-    bedrooms.textContent = `${unit.bedrooms ?? "—"} ${message("KT", unit.bedrooms === 1 ? "bed" : "beds")}`;
-    bathrooms.textContent = `${unit.bathrooms ?? "—"} ${message("KM", unit.bathrooms === 1 ? "bath" : "baths")}`;
-    area.textContent = unit.area == null ? "— m²" : `${unit.area} m²`;
-
-    return card;
+  function renderCard(unit, template) {
+    return createPropertyCard(unit, template, {
+      isProject: projectUnits.includes(unit),
+      showCluster: Boolean(catalog),
+    });
   }
 
   function initCatalog() {
     const grid = catalog.querySelector("#property-results");
     const template = document.getElementById("catalog-property-template").content.firstElementChild;
-    const cards = units.map((unit) => createPropertyCard(unit, template));
+    const cards = units.map((unit) => renderCard(unit, template));
+    const requestedCluster = params.get("cluster");
+    const clusterFilter = document.getElementById("property-cluster-filter");
+    const clusterLabel = clusterFilter.querySelector("span");
+    const clearCluster = clusterFilter.querySelector("button");
+    let cluster = cards.some((card) => card.dataset.cluster === requestedCluster)
+      ? requestedCluster : "";
+    if (cluster) {
+      clusterLabel.textContent = `Cluster: ${cluster}`;
+      clearCluster.textContent = message("Hapus filter cluster", "Clear cluster filter");
+      clusterFilter.hidden = false;
+      clearCluster.addEventListener("click", () => {
+        cluster = "";
+        clusterFilter.hidden = true;
+        const url = new URL(window.location.href);
+        url.searchParams.delete("cluster");
+        window.history.replaceState(window.history.state, "", url);
+        resetPage();
+        count.parentElement.focus({ preventScroll: true });
+      });
+    }
     const count = catalog.querySelector(".count-text strong");
     const empty = catalog.querySelector("#property-empty");
     const sort = catalog.querySelector("#sort-select");
@@ -368,6 +340,7 @@
           selectedRanges.some(([, min, max]) => amount >= min && amount <= max);
         return (
           listing.status === status &&
+          (!cluster || listing.cluster === cluster) &&
           (!locations.length || locations.includes(listing.region)) &&
           (!types.length || types.includes(listing.propertyType)) &&
           matchesPrice

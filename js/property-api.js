@@ -22,21 +22,29 @@ const propertyApi = (() => {
 
   function mapUnit(item) {
     const rental = item.transaction === "sewa";
+    const isProject = typeof ecoArdence !== "undefined"
+      && ecoArdence.units.some((unit) => unit.slug === item.slug);
     const cover = cmsApi.media(item.coverImage);
     return {
       slug: item.slug,
-      rawPrice: item.price,
+      rawPrice: item.price > 0 ? item.price : null,
       name: text(item.name),
       location: item.location,
       cluster: item.cluster,
       transaction: rental ? "sewa" : "jual",
-      status: text(rental ? "Disewa" : "Dijual"),
+      status: isProject ? message("Proyek Baru", "New Development") : text(rental ? "Disewa" : "Dijual"),
       propertyType: item.propertyType,
       type: text(propertyTypes[item.propertyType]),
-      price: formatPrice(item.price, rental),
+      price: item.price > 0
+        ? (isProject ? message("Mulai dari", "Starting at") + ` Rp ${number.format(item.price)}` : formatPrice(item.price, rental))
+        : message("Hubungi untuk harga", "Enquire for pricing"),
       bedrooms: item.bedrooms,
       bathrooms: item.bathrooms,
       area: item.buildingArea ?? item.area,
+      landArea: item.landArea,
+      buildingArea: item.buildingArea,
+      lotDimensions: item.lotDimensions,
+      floors: item.floors,
       description: item.description,
       photo: cover?.src ?? null,
       alt: cover?.alt,
@@ -44,12 +52,20 @@ const propertyApi = (() => {
   }
 
   async function getUnit(slug) {
+    const naturaUnit = typeof serpongNatura === "undefined"
+      ? null
+      : serpongNatura.units.find((unit) => unit.slug === slug);
+    if (naturaUnit) return naturaUnit;
+
     const projectUnit = typeof ecoArdence === "undefined"
       ? null
       : ecoArdence.units.find((unit) => unit.slug === slug);
-    if (projectUnit) return projectUnit;
-    const item = await cmsApi.bySlug("properties", slug);
-    if (!item) return null;
+    const item = await cmsApi.bySlug("properties", slug).catch((error) => {
+      if (!projectUnit) throw error;
+      console.error("Gagal memuat unit EcoArdence dari CMS:", error);
+      return null;
+    });
+    if (!item) return projectUnit ?? null;
     const plans = (item.floorPlans ?? [])
       .filter((file) => file?.mimeType?.startsWith("image/"))
       .map(cmsApi.media)
@@ -71,14 +87,10 @@ const propertyApi = (() => {
       brochure: item.brochure?.mimeType === "application/pdf"
         ? cmsApi.media(item.brochure)?.src
         : null,
-      landArea: item.landArea,
-      lotDimensions: item.lotDimensions,
-      buildingArea: item.buildingArea,
       certificate: item.certificate,
       buildingPermit: item.buildingPermit,
       furnishing: item.furnishing,
       facing: item.facing,
-      floors: item.floors,
       garage: item.garage,
       maidBedrooms: item.maidBedrooms,
       maidBathrooms: item.maidBathrooms,
@@ -107,5 +119,14 @@ const propertyApi = (() => {
     return items.map(mapUnit);
   }
 
-  return { getUnit, listUnits };
+  function projectUnits(cmsUnits) {
+    const unitsBySlug = new Map(cmsUnits.map((unit) => [unit.slug, unit]));
+    const naturaUnits = typeof serpongNatura === "undefined" ? [] : serpongNatura.units;
+    return [
+      ...ecoArdence.units.map((unit) => unitsBySlug.get(unit.slug) ?? unit),
+      ...naturaUnits,
+    ];
+  }
+
+  return { getUnit, listUnits, projectUnits };
 })();

@@ -22,6 +22,11 @@
     byId("unit-missing").hidden = false;
     return;
   }
+  if (unit.profileUrl) {
+    const listLink = byId("unit-list-link");
+    listLink.href = unit.profileUrl;
+    listLink.textContent = unit.location;
+  }
   const fields = {
     breadcrumb: unit.name,
     title: unit.name,
@@ -145,6 +150,13 @@
     updateControls();
   }
 
+  if (unit.brochurePage) {
+    const brochure = byId("unit-brochure-page");
+    const link = brochure.querySelector("a");
+    link.href = unit.brochurePage;
+    link.textContent = message("Lihat brosur dan stok", "View brochures and stock");
+    brochure.hidden = false;
+  }
   if (unit.plans?.length || unit.brochure) {
     const grid = byId("unit-plan-grid");
     grid.hidden = !unit.plans?.length;
@@ -207,7 +219,7 @@
   const photos = new Map();
   const photoKey = (src) => new URL(src, document.baseURI).href;
   if (unit.photo) {
-    photos.set(photoKey(unit.photo), { src: unit.photo, alt: unit.alt });
+    photos.set(photoKey(unit.photo), { src: unit.photo, alt: unit.alt, example: unit.photoIsExample });
   }
   for (const image of unit.gallery ?? []) {
     const key = photoKey(image.src);
@@ -221,7 +233,7 @@
     ["images/eco-ardence/fasilitas-coworking.jpg", "Contoh foto ruang kerja bersama", "Sample coworking space photo"],
     ["images/eco-ardence/fasilitas-river-walk.jpg", "Contoh foto area pejalan kaki", "Sample walking path photo"],
   ];
-  for (const [src, label, englishLabel] of examplePhotos) {
+  for (const [src, label, englishLabel] of unit.profileUrl ? [] : examplePhotos) {
     if (photos.size >= 5) break;
     const key = photoKey(src);
     if (!photos.has(key)) photos.set(key, { src, alt: message(label, englishLabel), example: true });
@@ -232,6 +244,13 @@
     const photo = byId("unit-photo");
     const caption = byId("unit-photo-caption");
     const thumbnails = byId("unit-thumbnails");
+    photo.addEventListener("error", () => {
+      if (photo.getAttribute("src") === "images/property-1.svg") return;
+      photo.src = "images/property-1.svg";
+      photo.alt = "";
+      caption.hidden = false;
+      caption.textContent = message("Foto belum tersedia", "Photo unavailable");
+    });
     const showPhoto = (index) => {
       const image = gallery[index];
       photo.src = image.src;

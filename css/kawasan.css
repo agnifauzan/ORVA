@@ -1,0 +1,123 @@
+.kawasan-section {
+  padding-block: var(--section-space);
+  scroll-margin-top: var(--nav-height);
+}
+.kawasan-section h2,
+.kawasan-profile h2 {
+  margin-bottom: 24px;
+}
+.kawasan-grid,
+.kawasan-meta {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--card-gap);
+}
+.kawasan-paradise {
+  --kawasan-image: url("../images/eco-ardence/gerbang.webp");
+}
+.kawasan-natura {
+  --kawasan-image: url("https://serpongnaturacity.co.id/wp-content/uploads/2023/12/Signature-Mediterania-123-Fasad-Serpong-Natura-City-730x520.jpg");
+}
+.kawasan-card,
+.kawasan-hero {
+  display: flex;
+  align-items: end;
+  min-height: 240px;
+  background: linear-gradient(0deg, #080e1a 0%, #080e1a8a 55%, #080e1a10 100%),
+    var(--kawasan-image) center / cover no-repeat #263831;
+  border-radius: var(--radius);
+  color: #fff;
+}
+.kawasan-card:hover,
+.kawasan-card:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 4px;
+}
+.kawasan-card-content {
+  display: grid;
+  gap: 8px;
+  padding: clamp(20px, 4vw, 36px);
+}
+.kawasan-card-content > span {
+  color: #f3d4aa;
+}
+.kawasan-hero {
+  min-height: clamp(260px, 36vw, 420px);
+}
+.kawasan-profile section,
+.kawasan-actions {
+  margin-top: 36px;
+}
+.kawasan-panel,
+.kawasan-cluster {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--card);
+  padding: clamp(16px, 3vw, 26px);
+}
+.kawasan-panel dt {
+  color: var(--muted);
+}
+.kawasan-panel dt:not(:first-child) {
+  margin-top: 12px;
+}
+.kawasan-panel dd {
+  font-weight: 700;
+}
+.kawasan-profile p + p {
+  margin-top: 12px;
+}
+.kawasan-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+.kawasan-tab {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 8px 14px;
+  background: var(--card);
+  color: var(--text);
+  font: inherit;
+  font-weight: 700;
+  text-align: left;
+  cursor: pointer;
+}
+.kawasan-tab span {
+  display: block;
+  color: var(--muted);
+  font-size: 0.8125rem;
+  font-weight: 400;
+}
+.kawasan-tab:hover,
+.kawasan-tab[aria-selected="true"] {
+  border-color: var(--gold);
+}
+.kawasan-tab[aria-selected="true"] {
+  background: var(--card-2);
+  color: var(--gold);
+}
+.kawasan-tab:focus-visible,
+.kawasan-cluster:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+.kawasan-profile .kawasan-text-link {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.kawasan-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+@media (max-width: 640px) {
+  .kawasan-grid,
+  .kawasan-meta {
+    grid-template-columns: 1fr;
+  }
+}
+.kawasan-property-grid {
+  margin-bottom: 20px;
+}
