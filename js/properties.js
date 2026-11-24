@@ -2,8 +2,8 @@
   const { locale, message, place, text } = orvaLanguage;
   const search = document.querySelector("[data-property-search]");
   const form = search.querySelector("form");
-  const tabs = [...search.querySelectorAll("[data-status]")];
   const region = form.querySelector("#lokasi");
+  const development = form.querySelector("#perumahan");
   const type = form.querySelector("#tipe");
   const price = form.querySelector("#harga");
   const catalog = document.getElementById("daftar-properti");
@@ -34,9 +34,8 @@
   const params = new URLSearchParams(window.location.search);
   const requestedType = params.get("type");
   const requestedStatus = params.get("status") || requestedType;
-  let status =
-    tabs.find((tab) => tab.dataset.status === requestedStatus)?.dataset
-      .status || "jual";
+  const status = requestedStatus === "sewa" ? "sewa" : "jual";
+  if (statusField) statusField.value = status;
 
   const saleRanges = [
     [message("< Rp 1 M", "< Rp 1B"), 0, 999_999_999],
@@ -84,16 +83,11 @@
     button.setAttribute("aria-pressed", String(pressed));
   }
 
-  function updateTabs() {
-    tabs.forEach((tab) => setPressed(tab, tab.dataset.status === status));
-    if (statusField) statusField.value = status;
-  }
-
   updatePriceOptions();
-  updateTabs();
 
   for (const [select, parameter] of [
     [region, "lokasi"],
+    [development, "perumahan"],
     [type, "type"],
     [price, "harga"],
   ]) {
@@ -110,18 +104,7 @@
     }
   }
 
-  for (const tab of tabs) {
-    tab.addEventListener("click", () => {
-      const nextStatus = tab.dataset.status;
-      const changeRanges = (status === "sewa") !== (nextStatus === "sewa");
-      status = nextStatus;
-      if (changeRanges) updatePriceOptions();
-      updateTabs();
-      renderCatalog?.();
-    });
-  }
-
-  const renderCatalog = catalog && initCatalog();
+  if (catalog) initCatalog();
 
   const featuredGrid = document.getElementById("homepage-property-results");
   if (featuredGrid) {
@@ -184,9 +167,15 @@
       trigger.setAttribute("aria-label", `${title}: ${summary}`);
     }
 
+    const hasAllOption = select !== price;
+
     function buildOptions() {
+      const allSelected = hasAllOption && [...select.options].every(
+        (option) => !option.value || option.selected,
+      );
+      const noSelection = !selectedValues(select).length;
       const rows = [...select.options]
-        .filter((option) => option.value)
+        .filter((option) => hasAllOption || option.value)
         .map((option) => {
           const row = document.createElement("label");
           const input = document.createElement("input");
@@ -197,7 +186,9 @@
             input.setAttribute("form", "");
           }
           input.value = option.value;
-          input.checked = option.selected;
+          input.checked = option.value
+            ? option.selected || (hasAllOption && noSelection)
+            : allSelected || noSelection;
           row.append(input, document.createTextNode(option.text));
           return row;
         });
@@ -255,8 +246,16 @@
       if (event.target === query && event.key === "Enter")
         event.preventDefault();
     });
+    list.addEventListener("change", (event) => {
+      if (!hasAllOption) return;
+      const [all, ...options] = list.querySelectorAll("input");
+      if (event.target === all) {
+        for (const option of options) option.checked = all.checked;
+      }
+      all.checked = options.length > 0 && options.every((option) => option.checked);
+    });
     panel.querySelector(".filter-reset").addEventListener("click", () => {
-      for (const input of list.querySelectorAll("input")) input.checked = false;
+      for (const input of list.querySelectorAll("input")) input.checked = hasAllOption;
       query.value = "";
       filterOptions();
       list.scrollTop = 0;
@@ -265,7 +264,7 @@
       const values = [...list.querySelectorAll("input:checked")].map(
         (option) => option.value,
       );
-      selectValues(select, values);
+      selectValues(select, values.includes("") ? [] : values);
       panel.hidePopover();
       trigger.focus();
       select.dispatchEvent(new Event("change", { bubbles: true }));
@@ -284,7 +283,23 @@
   function initCatalog() {
     const grid = catalog.querySelector("#property-results");
     const template = document.getElementById("catalog-property-template").content.firstElementChild;
-    const cards = units.map((unit) => renderCard(unit, template));
+    const developments = [
+      ["paradise-serpong-city-2", ecoArdence],
+      ["serpong-natura-city", serpongNatura],
+    ];
+    const developmentBySlug = new Map(developments.flatMap(([key, project]) =>
+      project.units.map(({ slug }) => [slug, key]),
+    ));
+    const developmentByName = new Map(developments.map(([key, project]) =>
+      [project.project.toLowerCase(), key],
+    ));
+    const cards = units.map((unit) => {
+      const card = renderCard(unit, template);
+      card.dataset.development = developmentBySlug.get(unit.slug)
+        ?? developmentByName.get(unit.location?.trim().toLowerCase())
+        ?? "";
+      return card;
+    });
     const requestedCluster = params.get("cluster");
     const clusterFilter = document.getElementById("property-cluster-filter");
     const clusterLabel = clusterFilter.querySelector("span");
@@ -328,6 +343,7 @@
 
     function render() {
       const locations = selectedValues(region);
+      const selectedDevelopments = selectedValues(development);
       const types = selectedValues(type);
       const selectedRanges = selectedValues(price).map(
         (value) => ranges[value],
@@ -342,6 +358,7 @@
           listing.status === status &&
           (!cluster || listing.cluster === cluster) &&
           (!locations.length || locations.includes(listing.region)) &&
+          (!selectedDevelopments.length || selectedDevelopments.includes(listing.development)) &&
           (!types.length || types.includes(listing.propertyType)) &&
           matchesPrice
         );

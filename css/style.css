@@ -699,10 +699,10 @@ select {
   position: absolute;
   top: 50%;
   right: 4px;
-  width: 14px;
-  height: 14px;
-  border-right: 2px solid #fff;
-  border-bottom: 2px solid #fff;
+  width: 9.8px;
+  height: 9.8px;
+  border-right: 1.4px solid #fff;
+  border-bottom: 1.4px solid #fff;
   transform: translateY(-70%) rotate(45deg);
   pointer-events: none;
 }
@@ -775,10 +775,10 @@ select {
   position: absolute;
   top: 50%;
   right: 4px;
-  width: 14px;
-  height: 14px;
-  border-right: 2px solid #fff;
-  border-bottom: 2px solid #fff;
+  width: 9.8px;
+  height: 9.8px;
+  border-right: 1.4px solid #fff;
+  border-bottom: 1.4px solid #fff;
   transform: translateY(-70%) rotate(45deg);
 }
 .filter-trigger[aria-expanded="true"]::after {
@@ -919,7 +919,7 @@ select {
   min-height: 46px;
   border: 1px solid #454c5a;
   border-radius: 999px;
-  background: #171e2d;
+  background: transparent;
   color: #d0d5e1;
   font-size: 14px;
   cursor: pointer;
@@ -1186,13 +1186,26 @@ section {
   padding: 22px;
 }
 .aimg {
+  position: relative;
   width: 100%;
   aspect-ratio: 1.15;
   border-radius: 16px;
   overflow: hidden;
   background: #1a2035;
 }
+.agent-card-initials {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: var(--hero-gold);
+  font: 500 var(--type-h2) / 1 var(--font-heading);
+}
+.aimg img[hidden] {
+  display: none;
+}
 .aimg img {
+  position: relative;
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -1659,9 +1672,10 @@ footer {
   background: var(--card);
 }
 .unit-photo img {
+  display: block;
   width: 100%;
   aspect-ratio: 4 / 3;
-  object-fit: cover;
+  object-fit: scale-down;
 }
 .unit-photo figcaption {
   padding: 8px 12px;
@@ -1825,7 +1839,7 @@ footer {
   display: block;
   width: 100%;
   aspect-ratio: 16 / 10;
-  object-fit: cover;
+  object-fit: scale-down;
 }
 .unit-facility-caption {
   position: relative;
@@ -2398,13 +2412,9 @@ footer {
 }
 /* Form Card */
 .form-card {
-  background: #13192f;
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
   border: 1px solid var(--contact-border);
   border-radius: var(--radius);
   padding: clamp(24px, 2.8vw, 40px);
-  box-shadow: 0 16px 40px rgba(5, 9, 22, 0.22);
 }
 /* Form Controls */
 .cform[hidden] {
@@ -3208,7 +3218,7 @@ footer {
 .article-cover {
   width: 100%;
   aspect-ratio: 2.2;
-  object-fit: cover;
+  object-fit: scale-down;
   border: 1px solid var(--line);
   border-radius: var(--radius);
   background: var(--card);

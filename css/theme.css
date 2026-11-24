@@ -404,7 +404,7 @@
   color-scheme: light;
 }
 
-[data-theme="light"] :is(.filter-query input, .filter-reset) {
+[data-theme="light"] .filter-query input {
   background: var(--bg);
 }
 
@@ -451,7 +451,7 @@
   --contact-border: var(--line);
 }
 
-[data-theme="light"] :is(.form-card, .fast-track-card) {
+[data-theme="light"] .fast-track-card {
   background: var(--card);
   border-color: var(--line);
   box-shadow: var(--light-shadow);

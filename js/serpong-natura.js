@@ -78,5 +78,49 @@ const serpongNatura = (() => {
       }),
     };
   });
+  // Product Knowledge Botanica Residence, pages 29–44.
+  const botanica = "Natura Botanica Residence";
+  const botanicaTypes = [
+    { key: "74-84-140", label: "74/84–140", buildingArea: 74, land: "84–140 m²" },
+    { key: "76-sudut", label: message("76/Sudut", "76/Corner"), buildingArea: 76 },
+    { key: "61-72", label: "61/72", buildingArea: 61, landArea: 72, land: "72 m²" },
+    { key: "61-tepi", label: message("61/Tepi", "61/Edge"), buildingArea: 61 },
+  ].map(({ key, label, buildingArea, landArea, land }) => {
+    const typeName = message(`Tipe ${label}`, `Type ${label}`);
+    const lot = land ?? message("bervariasi menurut kavling", "varies by lot");
+    return {
+      slug: `serpong-natura-city-botanica-${key}`,
+      name: `${typeName} · ${botanica}`,
+      cluster: botanica,
+      location: project,
+      developer,
+      transaction: "jual",
+      status: message("Proyek Baru", "New Development"),
+      propertyType: "rumah",
+      type: text("Rumah"),
+      rawPrice: null,
+      price: message("Hubungi untuk harga", "Enquire for pricing"),
+      area: buildingArea,
+      buildingArea,
+      landArea,
+      bedrooms: 3,
+      bathrooms: 2,
+      floors: 2,
+      garage: message("Carport 1 mobil", "1-car carport"),
+      photo: `images/botanica/${key}-fasad.jpg`,
+      alt: message(`Ilustrasi fasad ${typeName}`, `Facade illustration for ${typeName}`),
+      photoIsExample: true,
+      plans: [{
+        src: `images/botanica/${key}-denah.jpg`,
+        label: message("Denah lantai dasar dan lantai atas", "Ground- and upper-floor plans"),
+      }],
+      profileUrl: "kawasan.html?profil=serpong-natura-city",
+      description: message(
+        `${typeName} di ${botanica} adalah rumah dua lantai dengan luas bangunan ${buildingArea} m², tiga kamar tidur, dua kamar mandi, dan carport untuk satu mobil. Luas tanah: ${lot}.`,
+        `${typeName} at ${botanica} is a two-storey home with ${buildingArea} m² of building area, three bedrooms, two bathrooms, and a one-car carport. Land area: ${lot}.`,
+      ),
+    };
+  });
+  clusters.push({ name: botanica, types: botanicaTypes });
   return { project, developer, brochure, clusters, units: clusters.flatMap(({ types }) => types) };
 })();

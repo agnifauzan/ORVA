@@ -1,5 +1,5 @@
 (() => {
-  const { text: agentText, whatsappURL, setPhoto, profileURL } = agentApi;
+  const { initials, text: agentText, whatsappURL, setPhoto, profileURL } = agentApi;
 
   function setContact(link, agent) {
     const href = whatsappURL(agent);
@@ -10,7 +10,10 @@
 
   async function renderCards(template) {
     const list = document.querySelector("#agent .grid-3");
-    const agents = await cmsApi.list("agents");
+    const status = document.getElementById("agent-list-status");
+    const agents = await agentApi.list();
+    status.hidden = agents.length > 0;
+    if (!agents.length) status.textContent = orvaLanguage.message("Belum ada agen yang tersedia.", "No agents are available yet.");
     const cards = agents.map((agent) => {
       const card = template.content.firstElementChild.cloneNode(true);
       siteContent.text(card.querySelector("h4"), agent.name);
@@ -21,6 +24,7 @@
       siteContent.text(experience.querySelector("strong"), agentText(agent.experience));
       siteContent.text(experience.querySelector("span"), agentText(agent.experienceLabel));
       experience.hidden = !agentText(agent.experience);
+      card.querySelector(".agent-card-initials").textContent = initials(agent);
       setPhoto(card.querySelector("img"), agent);
       card.querySelector(".btn-outline").href = profileURL(agent);
       setContact(card.querySelector(".btn-gold"), agent);
@@ -39,8 +43,7 @@
 
     let agent;
     try {
-      const result = await cmsApi.read("agents", { "where[id][equals]": id, depth: "1", limit: "1" });
-      [agent] = result.docs;
+      agent = await agentApi.byId(id);
     } catch (error) {
       console.error("Gagal memuat profil agen:", error);
       status.textContent = orvaLanguage.text("Profil agen belum bisa dimuat. Coba muat ulang halaman.");
@@ -85,10 +88,9 @@
     setList("services", agent.services);
     setList("highlights", agent.experienceHighlights);
 
-    field("initials").textContent = agent.name.trim().split(/\s+/).slice(0, 2).map((part) => part[0]).join("");
+    field("initials").textContent = initials(agent);
     const image = field("photo");
     setPhoto(image, agent);
-    image.hidden = false;
     setContact(field("whatsapp"), agent);
     const external = cmsApi.safeURL(agent.profile?.href, document.baseURI, ["http:", "https:"]);
     if (external && !agent.profile.href.trim().startsWith("#")) {
@@ -102,7 +104,12 @@
   }
 
   const template = document.getElementById("agent-card-template");
-  if (template) renderCards(template).catch((error) => console.error("Gagal memuat daftar agen:", error));
+  if (template) renderCards(template).catch((error) => {
+    console.error("Gagal memuat daftar agen:", error);
+    const status = document.getElementById("agent-list-status");
+    status.textContent = orvaLanguage.message("Daftar agen belum bisa dimuat.", "The agent list could not be loaded.");
+    status.hidden = false;
+  });
   const profile = document.getElementById("agent-profile");
   if (profile) renderProfile(profile);
 })();

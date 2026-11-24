@@ -5,7 +5,7 @@
 
   let article;
   try {
-    [article] = await Promise.all([cmsApi.bySlug("articles", slug), siteContent.ready]);
+    [article] = await Promise.all([articleApi.bySlug(slug), siteContent.ready]);
   } catch (error) {
     console.error("Gagal memuat detail artikel:", error);
     message.prepend(text("Artikel belum bisa dimuat.") + " ");
@@ -33,7 +33,7 @@
   document.getElementById("detail-category").textContent = text(category);
   document.getElementById("detail-reading-time").textContent = localMessage(`${minutes} menit baca`, `${minutes} min read`);
   const image = document.getElementById("detail-image");
-  const cover = cmsApi.media(coverImage);
+  const cover = articleApi.cover(coverImage);
   if (cover) {
     image.src = cover.src;
     image.alt = cover.alt;

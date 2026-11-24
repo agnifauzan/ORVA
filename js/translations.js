@@ -6,6 +6,8 @@ const orvaTranslations = [
   ["Lebih dari sekadar agensi properti. Kami membantu setiap orang menemukan tempat untuk bertumbuh dengan agent berpengalaman dan listing terverifikasi.", "More than a real estate agency. We help people find room to grow with experienced agents and verified listings.", "Lebih dari sekadar agensi properti. Kami membantu setiap orang menemukan tempat untuk bertumbuh dengan agen berpengalaman dan properti terverifikasi."],
   ["Navigasi utama", "Main navigation"],
   ["Properties", "Properties", "Properti"],
+  ["Perumahan", "Development"],
+  ["Semua Perumahan", "All Developments"],
   ["Beli", "Buy"],
   ["Disewa", "For Rent"],
   ["About Us", "About Us", "Tentang Kami"],

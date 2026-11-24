@@ -169,12 +169,18 @@
 }
 .kawasan-tabs {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 8px;
   margin-bottom: 20px;
+  overflow-x: auto;
+  padding: 4px 4px 10px;
+  scroll-padding-inline: 4px;
+  scroll-snap-type: x proximity;
 }
 .kawasan-tab {
   display: inline-flex;
+  flex: 0 0 auto;
+  scroll-snap-align: start;
   align-items: center;
   gap: 8px;
   white-space: nowrap;
@@ -213,17 +219,6 @@
 @media (max-width: 720px) {
   .kawasan-banner-slider {
     aspect-ratio: 16 / 10;
-  }
-  .kawasan-tabs {
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    padding: 4px 4px 10px;
-    scroll-padding-inline: 4px;
-    scroll-snap-type: x proximity;
-  }
-  .kawasan-tab {
-    flex: 0 0 auto;
-    scroll-snap-align: start;
   }
 }
 @media (max-width: 640px) {

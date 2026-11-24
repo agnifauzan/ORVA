@@ -11,7 +11,7 @@
   let articles = [];
 
   try {
-    const [items] = await Promise.all([cmsApi.list("articles"), siteContent.ready]);
+    const [items] = await Promise.all([articleApi.list(), siteContent.ready]);
     const categories = [...new Set(items.map((article) => article.category))]
       .sort((a, b) => text(a).localeCompare(text(b), locale));
     category.replaceChildren(category.options[0], ...categories.map((name) => new Option(text(name), name)));
@@ -26,8 +26,13 @@
       link.href = `article-detail.html?slug=${encodeURIComponent(article.slug)}`;
       link.setAttribute("aria-labelledby", title.id);
       const image = card.querySelector("img");
-      if (article.coverImage) siteContent.image(image, article.coverImage);
-      else image.remove();
+      const cover = articleApi.cover(article.coverImage);
+      if (cover) {
+        image.src = cover.src;
+        image.alt = cover.alt;
+      } else {
+        image.remove();
+      }
       card.querySelector(".eyebrow").textContent = text(article.category);
       card.querySelector("p").textContent = text(article.intro);
 
